@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -13,9 +18,17 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $authenticationService;
+
+    public function __construct(AuthenticationServiceInterface $_authenticationService)
+    {
+        $this->authenticationService = $_authenticationService;
+    }
+
     public function login(Request $request)
     {
-        //
+        dd('hello world');
     }
 
     /**
@@ -24,10 +37,16 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        //
+        try {
+            $user = $this->authenticationService->register($request);
+            return response($user, Response::HTTP_CREATED);
+        } catch (Exception $e) {
+            return Response::HTTP_EXPECTATION_FAILED;
+        }
     }
+
 
     /**
      * Display the specified resource.

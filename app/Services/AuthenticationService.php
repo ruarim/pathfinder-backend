@@ -2,10 +2,14 @@
 
 namespace App\Services;
 
+use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-class AuthenticationService
+class AuthenticationService implements AuthenticationServiceInterface
 {
     /**
      * Class constructor.
@@ -18,12 +22,17 @@ class AuthenticationService
 
     public function login(LoginRequest $loginRequest)
     {
-        return true;
     }
 
-    public function register(RegisterRequest $registerRequest)
+    public function register(Request $registerRequest)
     {
-        return true;
+        return User::create([
+            'first_name' => $$registerRequest->first_name,
+            'last_name' => $$registerRequest->last_name,
+            'username' => $$registerRequest->username,
+            'email' => $$registerRequest->email,
+            'password' => Hash::make($$registerRequest->password)
+        ]);
     }
 
     public function logout()
