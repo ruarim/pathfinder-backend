@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccbd816a07b206f971042295b899d1ba",
+    "content-hash": "829edc5da8c361985003a994e9ee55a0",
     "packages": [
         {
             "name": "brick/math",
@@ -5614,6 +5614,56 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
+        },
+        {
+            "name": "hisman/laravel-make-class",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hisman/laravel-make-class.git",
+                "reference": "9d69f116ca92a158b2c1f4e958f08828f4142477"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hisman/laravel-make-class/zipball/9d69f116ca92a158b2c1f4e958f08828f4142477",
+                "reference": "9d69f116ca92a158b2c1f4e958f08828f4142477",
+                "shasum": ""
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "orchestra/testbench": "^3.7",
+                "phpunit/phpunit": "^7.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Hisman\\MakeClass\\MakeClassServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hisman\\MakeClass\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hisman",
+                    "homepage": "https://hisman.co",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Artisan command for generating a new custom class in Laravel.",
+            "support": {
+                "issues": "https://github.com/hisman/laravel-make-class/issues",
+                "source": "https://github.com/hisman/laravel-make-class/tree/master"
+            },
+            "time": "2019-03-04T06:47:06+00:00"
         },
         {
             "name": "laravel/pint",
