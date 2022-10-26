@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {

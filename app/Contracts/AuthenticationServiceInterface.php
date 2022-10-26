@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 
 interface AuthenticationServiceInterface
