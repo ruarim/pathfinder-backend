@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->integer('capacity');
-            $table->string('venue_type');
+            $table->string('venue_type'); //@dev use enum type
             $table->time('opening_time');
             $table->time('clossing_time');
             $table->integer('rating')->nullable();
