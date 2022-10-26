@@ -31,4 +31,11 @@ class RegisterRequest extends FormRequest
                 'password' => 'string|max:255',
             ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'The email address that provided is already in use.',
+        ];
+    }
 }

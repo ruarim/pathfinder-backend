@@ -41,7 +41,7 @@ class AuthController extends Controller
             $user = $this->authenticationService->register($request);
             return response($user, Response::HTTP_CREATED);
         } catch (Exception $e) {
-            return Response::HTTP_EXPECTATION_FAILED;
+            return response()->json($e, 500);
         }
     }
 
