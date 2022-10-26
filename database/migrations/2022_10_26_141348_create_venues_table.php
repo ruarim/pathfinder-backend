@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('capacity');
             $table->string('venue_type'); //@dev use enum type
             $table->time('opening_time');
-            $table->time('clossing_time');
+            $table->time('closing_time');
             $table->integer('rating')->nullable();
         });
     }

@@ -16,6 +16,7 @@ class Venue extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'capacity',
         'opening_time',
         'closing_time',

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Venue;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\VenueRequest;
 
 class VenueController extends Controller
 {
@@ -15,7 +17,7 @@ class VenueController extends Controller
      */
     public function index()
     {
-        //
+        return Venue::all();
     }
 
     /**
@@ -23,7 +25,7 @@ class VenueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(VenueRequest $request)
     {
         //
     }
@@ -36,7 +38,17 @@ class VenueController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $venue = new Venue($data);
+        $venue->save();
+
+        $address_data = $data['address'];
+        $address = new Address($address_data);
+        $venue->address()->save($address);
+
+        //create a resource
+
+        return $venue;
     }
 
     /**
@@ -47,7 +59,7 @@ class VenueController extends Controller
      */
     public function show(Venue $venue)
     {
-        //
+        return $venue;
     }
 
     /**
