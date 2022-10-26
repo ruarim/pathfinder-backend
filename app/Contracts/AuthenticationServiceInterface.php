@@ -9,5 +9,4 @@ interface AuthenticationServiceInterface
 {
     public function login(LoginRequest $loginRequest);
     public function register(RegisterRequest $registerRequest);
-    public function logout();
 }

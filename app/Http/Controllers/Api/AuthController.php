@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,9 +25,15 @@ class AuthController extends Controller
         $this->authenticationService = $_authenticationService;
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        dd('hello world');
+            try {
+                return $this->authenticationService->login($request);
+            } catch(Exception $e){
+                return response()->json([
+               'message' => $e
+            ], 404);
+            }
     }
 
     /**
@@ -43,17 +50,5 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function logout($id)
-    {
-        //
     }
 }
