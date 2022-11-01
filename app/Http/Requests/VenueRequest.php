@@ -36,19 +36,19 @@ class VenueRequest extends FormRequest
         ];
     }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'name.required' => 'A title is required',
-    //         'name' => 'A name is required',
-    //         'capacity' => 'A capacity is required',
-    //         'venue_type' => 'A venue type is required',
-    //         'opening_time' => 'An opening time is required',
-    //         'closing_time' => 'A closing time is required',
-    //         'address.address_1' => 'An address is required',
-    //         'address.town_city' => 'A town is required',
-    //         'address.postcode' => 'A postcode is required',
-    //         'address.country' => 'A country is required',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'name.required' => 'A title is required',
+            'name' => 'A name is required',
+            'capacity' => 'A capacity is required',
+            'venue_type' => 'A venue type is required',
+            'opening_time' => 'An opening time is required',
+            'closing_time' => 'A closing time is required',
+            'address.address_1' => 'An address is required',
+            'address.town_city' => 'A town is required',
+            'address.postcode' => 'A postcode is required',
+            'address.country' => 'A country is required',
+        ];
+    }
 }

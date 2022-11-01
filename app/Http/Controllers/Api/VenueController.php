@@ -50,12 +50,8 @@ class VenueController extends Controller
             $venue->address()->save($address);
             return new VenueResource($venue);
         } catch (Exception $e) {
-            throw ValidationException::withMessages([
-                'error' => 'We were unable to save this venue at this time, please check to make sure you have filled in the form correctly. If this problem persists contact us.'
-            ]);
+            return response(['message' => 'We are having problems with this request, please make sure that all of the fields are input correctly.'], 400);
         }
-
-        //create a resource
     }
 
     /**
@@ -64,9 +60,17 @@ class VenueController extends Controller
      * @param  \App\Models\Venue  $venue
      * @return \Illuminate\Http\Response
      */
-    public function show(Venue $venue)
+    public function show(int $id)
     {
-        return $venue;
+        try {
+            $venue = Venue::find($id);
+            if (!$venue) {
+                return response(['message' => 'we cannot find a record of this venue, please check the id'], 400);
+            };
+            return VenueResource::collection(Venue::find($venue));
+        } catch (Exception $e) {
+            return response(['message' => 'We are having problems with this request, please make sure that this venue id exits'], 400);
+        }
     }
 
     /**
