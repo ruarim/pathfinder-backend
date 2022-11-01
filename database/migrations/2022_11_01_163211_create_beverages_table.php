@@ -22,7 +22,6 @@ return new class () extends Migration {
             $table->string('country')->nullable();
             $table->string('region')->nullable();
             $table->string('style')->nullable();
-            $table->string('region')->nullable();
             $table->string('producer')->nullable();
         });
 
@@ -36,6 +35,7 @@ return new class () extends Migration {
             $table->foreignId('beverage_id')
                   ->constrained()
                   ->onDelete('cascade');
+            $table->string('speciality');
         });
     }
 
@@ -46,7 +46,7 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('beverages');
         Schema::dropIfExists('venue_beverage');
+        Schema::dropIfExists('beverages');
     }
 };
