@@ -7,6 +7,7 @@ use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
+use App\Http\Resources\VenueResource;
 use Exception;
 use Illuminate\Validation\ValidationException;
 
@@ -47,7 +48,7 @@ class VenueController extends Controller
             $address_data = $data['address'];
             $address = new Address($address_data);
             $venue->address()->save($address);
-            return $venue;
+            return new VenueResource($venue);
         } catch (Exception $e) {
             throw ValidationException::withMessages([
                 'error' => 'We were unable to save this venue at this time, please check to make sure you have filled in the form correctly. If this problem persists contact us.'
