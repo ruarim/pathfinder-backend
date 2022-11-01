@@ -20,7 +20,7 @@ class VenueController extends Controller
      */
     public function index()
     {
-        return Venue::all();
+        return VenueResource::collection(Venue::all());
     }
 
     /**
