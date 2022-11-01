@@ -6,7 +6,9 @@ use App\Models\Venue;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\VenueRequest;
+use App\Http\Requests\VenueRequest;
+use Exception;
+use Illuminate\Validation\ValidationException;
 
 class VenueController extends Controller
 {
@@ -36,19 +38,23 @@ class VenueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VenueRequest $request)
     {
-        $data = $request->all();
-        $venue = new Venue($data);
-        $venue->save();
-
-        $address_data = $data['address'];
-        $address = new Address($address_data);
-        $venue->address()->save($address);
+        try {
+            $data = $request->all();
+            $venue = new Venue($data);
+            $venue->save();
+            $address_data = $data['address'];
+            $address = new Address($address_data);
+            $venue->address()->save($address);
+            return $venue;
+        } catch (Exception $e) {
+            throw ValidationException::withMessages([
+                'error' => 'We were unable to save this venue at this time, please check to make sure you have filled in the form correctly. If this problem persists contact us.'
+            ]);
+        }
 
         //create a resource
-
-        return $venue;
     }
 
     /**
@@ -70,7 +76,6 @@ class VenueController extends Controller
      */
     public function edit(Venue $venue)
     {
-        //
     }
 
     /**
