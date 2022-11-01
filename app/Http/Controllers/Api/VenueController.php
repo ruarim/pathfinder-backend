@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueResource;
 use Exception;
-use Illuminate\Validation\ValidationException;
 
 class VenueController extends Controller
 {

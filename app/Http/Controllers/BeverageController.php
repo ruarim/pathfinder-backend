@@ -35,7 +35,6 @@ class BeverageController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
