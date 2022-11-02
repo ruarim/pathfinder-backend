@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\VenueRequest;
+use App\Http\Resources\VenueResource;
+use App\Models\Venue;
 
 class VenueController extends Controller
 {
     public function index()
     {
-        return view('welcome');
+        $venues = VenueResource::collection(Venue::all());
+        return view('venues', ['venues' => $venues]);
+    }
+
+    public function show(VenueRequest $request)
+    {
     }
 }
