@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('dashboard');
 
-Route::resource('venues', VenueController::class);
+Route::resource('venues', VenueController::class)->name('index', 'venues');
+Route::resource('users', UserController::class)->name('index', 'users');

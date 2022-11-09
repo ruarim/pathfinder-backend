@@ -14,10 +14,9 @@
             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <table class="min-w-full divide-y divide-gray-300">
                 <thead>
-                    {{-- Loop here in seperate component --}}
                   <tr>
+                      <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">ID</th>
                     <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">Name</th>
-                    <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Owner</th>
                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Address</th>
                     <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Type</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0">
@@ -26,17 +25,17 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">The Swan</td>
-                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">John Smith</td>
-                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">john@example.com</td>
-                    <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">Boozer</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
-                    </td>
-                  </tr>
-
-                  <!-- More people... -->
+                    @foreach ($venues as $venue)
+                    <tr>
+                        <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{{ $venue->id }}</td>
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">{{ $venue->name }}</td>
+                      <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{{ $venue->address->address_1 }}</td>
+                      <td class="whitespace-nowrap py-4 px-3 text-sm text-gray-500">{{ $venue->venue_type }}</td>
+                      <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
+                      </td>
+                    </tr>
+                    @endforeach
                 </tbody>
               </table>
             </div>
