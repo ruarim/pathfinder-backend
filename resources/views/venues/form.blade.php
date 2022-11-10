@@ -31,8 +31,8 @@
                 Capacity
             </x-form.field.text>
             <x-form.field.select
-                name="type"
-                id="type"
+                name="venue_type"
+                id="venue_type"
                 label="type"
                 :options="['pub', 'bar']">
                 Type
@@ -91,7 +91,7 @@
                 Town / City
             </x-form.field.text>
             <x-form.field.text
-                name="Postcode"
+                name="postcode"
                 for="Postcode"
                 type="text"
                 id="postcode"
@@ -100,7 +100,7 @@
                 Postcode
             </x-form.field.text>
             <x-form.field.text
-                name="Country"
+                name="country"
                 for="Country"
                 type="text"
                 id="country"

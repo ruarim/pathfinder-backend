@@ -28,4 +28,9 @@ class Venue extends Model
     {
         return $this->hasOne(Address::class);
     }
+
+    public function beverages()
+    {
+        return $this->belongsToMany(Beverage::class);
+    }
 }
