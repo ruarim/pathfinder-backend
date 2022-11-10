@@ -20,5 +20,10 @@ Route::get('/', function () {
 
 Route::prefix('venues')->group(function () {
     Route::get('', [VenueController::class, 'index'])->name('venues');
-    Route::get('create-venue', [VenueController::class, 'create_venue'])->name('create-venue');
+    Route::get('create', [VenueController::class, 'create'])->name('create');
+    Route::post('store', [VenueController::class, 'store'])->name('store');
+});
+
+Route::prefix('users')->group(function () {
+    Route::get('', [UserController::class, 'index'])->name('users');
 });

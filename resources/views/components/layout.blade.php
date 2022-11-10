@@ -9,7 +9,9 @@
     </head>
     <x-nav />
       <body>
+        <main class="mx-auto max-w-7xl px-6 lg:px-8 py-6 lg:py-8">
         {{ $slot }}
+        </main>
       </body>
     </head>
 </html>

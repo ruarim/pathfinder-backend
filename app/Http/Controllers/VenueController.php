@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueResource;
 use App\Models\Venue;
+use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
@@ -18,9 +19,15 @@ class VenueController extends Controller
     {
     }
 
-    public function create_venue()
+    public function create()
     {
         return view('venues.form');
+    }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+        return redirect(200, '/');
     }
 
     public function find($id)
