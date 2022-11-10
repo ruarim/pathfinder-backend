@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 })->name('dashboard');
 
-Route::resource('venues', VenueController::class)->name('index', 'venues');
-Route::resource('users', UserController::class)->name('index', 'users');
+Route::prefix('venues')->group(function () {
+    Route::get('', [VenueController::class, 'index'])->name('venues');
+    Route::get('create-venue', [VenueController::class, 'create_venue'])->name('create-venue');
+});

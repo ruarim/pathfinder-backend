@@ -11,10 +11,20 @@ class VenueController extends Controller
     public function index()
     {
         $venues = VenueResource::collection(Venue::all());
-        return view('venues', ['venues' => $venues]);
+        return view('venues.main', ['venues' => $venues]);
     }
 
     public function show(VenueRequest $request)
     {
+    }
+
+    public function create_venue()
+    {
+        return view('venues.form');
+    }
+
+    public function find($id)
+    {
+        return view('venues.form');
     }
 }
