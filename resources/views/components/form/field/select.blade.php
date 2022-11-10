@@ -18,8 +18,8 @@
     <label class="{{ $label }}">{{ $slot }}</label>
     <div class="{{ $input_container }}">
       <select id={{ $id }} name={{ $name }} class="{{ $select }}">
-        @foreach ($options as $key => $value)
-        <option value="{{ $key }}">{{ $value }}</option>
+        @foreach ($options as  $value)
+        <option value="{{ $value }}">{{ $value }}</option>
         @endforeach
       </select>
     </div>
