@@ -48,7 +48,7 @@
             <x-form.field.text
                 name="opening_time"
                 for="Opening Time"
-                type="text"
+                type="time"
                 id="opening_time"
                 label="Opening Time"
                 >
@@ -57,7 +57,7 @@
             <x-form.field.text
                 name="closing_time"
                 for="Closing Time"
-                type="text"
+                type="time"
                 id="closing_time"
                 label="Closing Time"
                 >
