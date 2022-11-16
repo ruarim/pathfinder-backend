@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Address;
+use App\Models\Attribute;
 
 class Venue extends Model
 {
@@ -29,8 +30,29 @@ class Venue extends Model
         return $this->hasOne(Address::class);
     }
 
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class);
+    }
+
     public function beverages()
     {
         return $this->belongsToMany(Beverage::class);
+    }
+
+    public function setAttributes(array $strings): Venue
+    {
+        $attributes = Attribute::fromStrings($strings);
+        $this->attributes()->sync($attributes->pluck("id"));
+
+        return $this;
+    }
+
+    public function setBeverages(array $strings): Venue
+    {
+        $beverages = Beverage::fromArray($strings);
+        $this->beverages()->sync($beverages->pluck("id"));
+
+        return $this;
     }
 }

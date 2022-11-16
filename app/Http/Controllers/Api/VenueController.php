@@ -44,12 +44,20 @@ class VenueController extends Controller
             $data = $request->all();
             $venue = new Venue($data);
             $venue->save();
+
             $address_data = $data['address'];
             $address = new Address($address_data);
             $venue->address()->save($address);
+
+            $attributes_data = $data['attributes'];
+            $venue->setAttributes($attributes_data);
+
+            $beverages_data = $data['beverages'];
+            $venue->setBeverages($beverages_data);
+
             return new VenueResource($venue);
         } catch (Exception $e) {
-            return response(['message' => 'We are having problems with this request, please make sure that all of the fields are input correctly.'], 400);
+            return response(['message' => $e->getMessage()], 400);
         }
     }
 
@@ -66,9 +74,9 @@ class VenueController extends Controller
             if (!$venue) {
                 return response(['message' => 'we cannot find a record of this venue, please check the id'], 400);
             };
-            return VenueResource::collection(Venue::find($venue));
+            return new VenueResource($venue);
         } catch (Exception $e) {
-            return response(['message' => 'We are having problems with this request, please make sure that this venue id exits'], 400);
+            return response(['message' => $e->getMessage()], 400);
         }
     }
 

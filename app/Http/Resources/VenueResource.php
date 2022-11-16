@@ -27,7 +27,9 @@ class VenueResource extends JsonResource
                 'town_city' => $this->address->town_city,
                 'postcode' => $this->address->postcode,
                 'country' => $this->address->country
-            ]
+            ],
+            'atrributes' => $this->attributes->pluck('name'),
+            'beverages' => $this->beverages->pluck('name') //@dev need to work out how to return everyting pluck('name', 'abv', ect...) doesnt work properly
         ];
     }
 }
