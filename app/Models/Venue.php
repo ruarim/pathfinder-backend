@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Address;
+use App\Models\Attribute;
 
 class Venue extends Model
 {
     use HasFactory;
 
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -24,7 +25,20 @@ class Venue extends Model
         'venue_type',
     ];
 
-    public function address(){
+    public function address()
+    {
         return $this->hasOne(Address::class);
+    }
+
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class);
+    }
+    public function setAttributes(array $strings): Venue
+    {
+        $attributes = Attribute::fromStrings($strings);
+        $this->attributes()->sync($attributes->pluck("id"));
+
+        return $this;
     }
 }
