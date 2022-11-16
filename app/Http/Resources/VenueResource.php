@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Address;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class VenueResource extends JsonResource
 {
     /**
@@ -28,8 +29,8 @@ class VenueResource extends JsonResource
                 'postcode' => $this->address->postcode,
                 'country' => $this->address->country
             ],
-            'atrributes' => $this->attributes->pluck('name'),
-            'beverages' => $this->beverages->pluck('name') //@dev need to work out how to return everyting pluck('name', 'abv', ect...) doesnt work properly
+            'atrributes' => AttributeResource::collection($this->attributes),
+            'beverages' => BeverageResource::collection($this->beverages)
         ];
     }
 }
