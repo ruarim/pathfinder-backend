@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
+})->name('dashboard');
+
+Route::prefix('venues')->group(function () {
+    Route::get('', [VenueController::class, 'index'])->name('venues');
+    Route::get('create', [VenueController::class, 'create'])->name('create');
+    Route::post('store', [VenueController::class, 'store'])->name('store');
+});
+
+Route::prefix('users')->group(function () {
+    Route::get('', [UserController::class, 'index'])->name('users');
 });

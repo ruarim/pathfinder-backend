@@ -34,10 +34,24 @@ class Venue extends Model
     {
         return $this->belongsToMany(Attribute::class);
     }
+
+    public function beverages()
+    {
+        return $this->belongsToMany(Beverage::class);
+    }
+
     public function setAttributes(array $strings): Venue
     {
         $attributes = Attribute::fromStrings($strings);
         $this->attributes()->sync($attributes->pluck("id"));
+
+        return $this;
+    }
+
+    public function setBeverages(array $strings): Venue
+    {
+        $beverages = Beverage::fromArray($strings);
+        $this->beverages()->sync($beverages->pluck("id"));
 
         return $this;
     }

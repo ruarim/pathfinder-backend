@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueResource;
 use Exception;
-use Illuminate\Validation\ValidationException;
 
 class VenueController extends Controller
 {
@@ -52,6 +51,9 @@ class VenueController extends Controller
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
+
+            $beverages_data = $data['beverages'];
+            $venue->setBeverages($beverages_data);
 
             return new VenueResource($venue);
         } catch (Exception $e) {
