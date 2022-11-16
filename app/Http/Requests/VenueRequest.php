@@ -33,6 +33,7 @@ class VenueRequest extends FormRequest
             'address.town_city' => 'string|required|max:255',
             'address.postcode' => 'string|required|max:255',
             'address.country' => 'string|required|max:255',
+            'attributes.*' => ['string', 'max:30'],
         ];
     }
 
@@ -49,6 +50,7 @@ class VenueRequest extends FormRequest
             'address.town_city' => 'A town is required',
             'address.postcode' => 'A postcode is required',
             'address.country' => 'A country is required',
+            'attributes.*' => 'Attributes are required',
         ];
     }
 }
