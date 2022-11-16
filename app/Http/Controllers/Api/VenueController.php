@@ -53,6 +53,9 @@ class VenueController extends Controller
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
 
+            $beverages_data = $data['beverages'];
+            $venue->setBeverages($beverages_data);
+
             return new VenueResource($venue);
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
