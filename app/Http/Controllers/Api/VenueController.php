@@ -86,7 +86,7 @@ class VenueController extends Controller
         $attributes = $request->input('attributes');
         $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
             $query->whereIn('name', $attributes);
-        }, '=', count($attributes))->get();
+        }, '>=', count($attributes))->get();
         return VenueResource::collection($venues);
     }
 
