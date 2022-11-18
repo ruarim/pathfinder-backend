@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Address;
 use Illuminate\Http\Resources\Json\JsonResource;
-
 
 class VenueResource extends JsonResource
 {

@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::resource('venues', VenueController::class);
+Route::get('attributes_search', [VenueController::class, 'attributes_search']);
