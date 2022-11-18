@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueResource;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 
 class VenueController extends Controller
 {
@@ -79,6 +80,16 @@ class VenueController extends Controller
             return response(['message' => $e->getMessage()], 400);
         }
     }
+
+    public function attributes_search(Request $request)
+    {
+        $attributes = $request->input('attributes');
+        $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
+            $query->whereIn('name', $attributes);
+        }, '>=', count($attributes))->get();
+        return VenueResource::collection($venues);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
