@@ -90,7 +90,13 @@ class VenueController extends Controller
         return VenueResource::collection($venues);
     }
 
+    public function name_search(Request $request)
+    {
+        $search = $request->query('name');
+        $venues = Venue::where('name', 'LIKE', "%{$search}%")->get();
 
+        return VenueResource::collection($venues);
+    }
     /**
      * Show the form for editing the specified resource.
      *

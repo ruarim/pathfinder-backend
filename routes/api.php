@@ -19,3 +19,4 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::resource('venues', VenueController::class);
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
+Route::get('name_search', [VenueController::class, 'name_search']);
