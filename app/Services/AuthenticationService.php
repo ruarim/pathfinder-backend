@@ -18,13 +18,19 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     public function login(LoginRequest $loginRequest)
     {
-        if (auth()->attempt($loginRequest->all())) {
+        $data = [
+            'email' => $loginRequest->email,
+            'password' => $loginRequest->password
+        ];
+
+        if (auth()->attempt($data)) {
+            $token = auth()->user()->createToken('authToken')->accessToken->token;
             $user = auth()->user();
-            $token = $user->createToken('authToken')->accessToken->token;
-            return [
+            return response()->json([
                 'user' => $user,
-                'token' =>  $token
-             ];
+                'token' =>  $token], 200);
+        } else {
+            return response()->json(['error' => 'Unauthorised'], 401);
         }
     }
 
