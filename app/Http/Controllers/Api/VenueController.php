@@ -83,7 +83,8 @@ class VenueController extends Controller
 
     public function attributes_search(Request $request)
     {
-        $attributes = $request->input('attributes');
+        $attributes = $request->query('attributes');
+        if ($attributes == null) return response(['message' => 'no attributes provided'], 200);
         $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
             $query->whereIn('name', $attributes);
         }, '>=', count($attributes))->get();
