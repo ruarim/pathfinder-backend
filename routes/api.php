@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VenueController;
+use App\Http\Controllers\Api\AttributeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
-Route::resource('venues', VenueController::class);
+Route::resources([
+    'venues' => VenueController::class,
+    'attributes' => AttributeController::class
+]);
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
 Route::get('name_search', [VenueController::class, 'name_search']);
