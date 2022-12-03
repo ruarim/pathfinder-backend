@@ -60,15 +60,15 @@ class Venue extends Model
     public function setAddress(array $address_data): Venue
     {
         //create params from address_data
-        $address1 = $address_data['address1'];
-        $city = $address_data['city'];
+        $address_1 = $address_data['address_1'];
+        $city = $address_data['town_city'];
         $country = $address_data['country'];
-        $response = Http::get('https://nominatim.openstreetmap.org/search?q="13+fernbank+road,+bristol&format=json&polygon=1&addressdetails=1');
+        $url = "https://nominatim.openstreetmap.org/search?q={$address_1}, {$city}, {$country}&format=json&polygon=1&addressdetails=1";
+        $response = Http::get($url)->json()[0];
 
-        $address_data['latitude'] = $response->json()['lat'];
-        $address_data['longitude'] = $response->json()['lon'];
+        $address_data['latitude'] = $response['lat'];
+        $address_data['longitude'] = $response['lon'];
 
-        dd($address_data);
         $address = new Address($address_data);
         $this->address()->save($address);
         return $this;
