@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Address;
 use App\Models\Attribute;
+use Illuminate\Support\Facades\Http;
 
 class Venue extends Model
 {
@@ -48,11 +49,28 @@ class Venue extends Model
         return $this;
     }
 
-    public function setBeverages(array $strings): Venue
+    public function setBeverages(array $strings): Venue //change to beverages
     {
         $beverages = Beverage::fromArray($strings);
         $this->beverages()->sync($beverages->pluck("id"));
 
+        return $this;
+    }
+
+    public function setAddress(array $address_data): Venue
+    {
+        //create params from address_data
+        $address_1 = $address_data['address_1'];
+        $city = $address_data['town_city'];
+        $country = $address_data['country'];
+        $url = "https://nominatim.openstreetmap.org/search?q={$address_1}, {$city}, {$country}&format=json&polygon=1&addressdetails=1";
+        $response = Http::get($url)->json()[0];
+
+        $address_data['latitude'] = $response['lat'];
+        $address_data['longitude'] = $response['lon'];
+
+        $address = new Address($address_data);
+        $this->address()->save($address);
         return $this;
     }
 }
