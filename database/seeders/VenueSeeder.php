@@ -6,7 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Venue;
 
-class DatabaseSeeder extends Seeder
+class VenueSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
                     'postcode' => "BS7 8BG",
                     'country' => "England",
                 ],
-                'atrributes' => ["Pool", "Real Ale"],
-                'beverages' => [
+                "attributes" => ["Pool", "Real Ale"],
+                "beverages" => [
                     [
                         "name" => "Proper Job",
                         "brewery" => "St Austell",
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
                     'postcode' => "BS7 8PE",
                     'country' => "England",
                 ],
-                'atrributes' => ["Pool", "Real Ale", "Live Sport"],
+                'attributes' => ["Pool", "Real Ale", "Live Sport"],
                 'beverages' => [
                     [
                         "name" => "Stella Artois",
@@ -108,7 +108,7 @@ class DatabaseSeeder extends Seeder
                     'postcode' => "BS7 8TN",
                     'country' => "England",
                 ],
-                'atrributes' => ["Pool", "Real Ale", "Beer Graden", "Live Sport"],
+                'attributes' => ["Pool", "Real Ale", "Beer Graden", "Live Sport"],
                 'beverages' => [
                     [
                         "name" => "Stella Artois",
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
                     'postcode' => "BS7 8TN",
                     'country' => "England",
                 ],
-                'atrributes' => ["Real Ale", "Beer Graden", "DJ"],
+                'attributes' => ["Real Ale", "Beer Graden", "DJ"],
                 'beverages' => [
                     [
                         "name" => "Mad Goose",
@@ -188,7 +188,7 @@ class DatabaseSeeder extends Seeder
                     'postcode' => "BS7 8AA",
                     'country' => "England",
                 ],
-                'atrributes' => ["Real Ale", "Beer Graden"],
+                'attributes' => ["Real Ale", "Beer Graden"],
                 'beverages' => [
                     [
                         "name" => "Stella Artois",
@@ -217,19 +217,19 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
             [
-                'name' => "The Cat and Wheel",
+                "name" => "The Cat and Wheel",
                 'capacity' => 150,
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "01:00",
                 'address' => [
-                    'address_1' => "5 Gloucester Road",
+                    'address_1' => "207 Cheltenham Road",
                     'town_city' => "Bristol",
-                    'postcode' => "BS7 8AA",
+                    'postcode' => "BS6 5QX",
                     'country' => "England",
                 ],
-                'atrributes' => ["Live Music", "Beer Graden", "Karaoke",  "Pool", "Darts"],
-                'beverages' => [
+                "attributes" => ["Live Music", "Beer Graden", "Karaoke",  "Pool", "Darts"],
+                "beverages" => [
                     [
                         "name" => "BOB",
                         "brewery" => "Wickwar Wessex",
@@ -256,6 +256,26 @@ class DatabaseSeeder extends Seeder
                     ]
                 ],
             ],
-        ]);
+        ])->each(function ($data) {
+            $venue = new Venue([
+                "name" => $data["name"],
+                "capacity" => $data["capacity"],
+                "venue_type" => $data["venue_type"],
+                "opening_time" => $data["opening_time"],
+                "closing_time" => $data["closing_time"],
+            ]);
+            $venue->save();
+
+            $address_data = $data['address'];
+            $venue->setAddress($address_data);
+
+            $attributes_data = $data['attributes'];
+            $venue->setAttributes($attributes_data);
+
+            $beverages_data = $data['beverages'];
+            $venue->setBeverages($beverages_data);
+
+            return $venue;
+        });
     }
 }

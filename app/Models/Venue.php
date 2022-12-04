@@ -49,7 +49,7 @@ class Venue extends Model
         return $this;
     }
 
-    public function setBeverages(array $strings): Venue //change to beverages
+    public function setBeverages(array $strings): Venue
     {
         $beverages = Beverage::fromArray($strings);
         $this->beverages()->sync($beverages->pluck("id"));
@@ -59,7 +59,6 @@ class Venue extends Model
 
     public function setAddress(array $address_data): Venue
     {
-        //create params from address_data
         $address_1 = $address_data['address_1'];
         $city = $address_data['town_city'];
         $country = $address_data['country'];
