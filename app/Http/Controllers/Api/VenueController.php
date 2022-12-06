@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueResource;
+use App\Models\Rating;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class VenueController extends Controller
 {
@@ -84,7 +87,9 @@ class VenueController extends Controller
     public function attributes_search(Request $request)
     {
         $attributes = $request->query('attributes');
-        if ($attributes == null) return response(['message' => 'no attributes provided'], 200);
+        if ($attributes == null) {
+            return response(['message' => 'no attributes provided'], 200);
+        }
         $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
             $query->whereIn('name', $attributes);
         }, '>=', count($attributes))->get();
@@ -117,8 +122,29 @@ class VenueController extends Controller
      */
     public function update(Request $request, Venue $venue)
     {
-        //
     }
+
+    public function rate_venue(Request $request)
+    {
+        try {
+            $venue = Venue::findOrFail($request->venue_id);
+            $rating = Rating::create([
+                'rating' => $request->rating
+            ]);
+
+            $venue->ratings()->save($rating);
+
+            $ratings = collect($venue->ratings);
+
+            $rating = new Rating();
+            $avg_rating = $rating->calculate_average_rating($ratings);
+
+            return response(['message' => 'success'], 200);
+        } catch (Exception $e) {
+            return response(['message' => $e->getMessage()], 400);
+        };
+    }
+
 
     /**
      * Remove the specified resource from storage.

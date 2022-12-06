@@ -21,7 +21,11 @@ Route::post('register', [AuthController::class, 'register']);
 Route::resources([
     'venues' => VenueController::class,
     'venues.show' => VenueController::class,
+
     'attributes' => AttributeController::class
 ]);
+
+Route::post('/venues/rate_venue', [VenueController::class, 'rate_venue']);
+
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
 Route::get('name_search', [VenueController::class, 'name_search']);
