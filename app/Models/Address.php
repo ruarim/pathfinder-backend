@@ -10,7 +10,7 @@ class Address extends Model
 {
     use HasFactory;
 
-        /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -21,9 +21,12 @@ class Address extends Model
         'town_city',
         'postcode',
         'country',
+        'latitude',
+        "longitude",
     ];
 
-    public function venue(){
+    public function venue()
+    {
         return $this->belongsTo(Venue::class);
     }
 }
