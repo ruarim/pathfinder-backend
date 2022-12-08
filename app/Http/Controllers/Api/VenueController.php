@@ -152,7 +152,6 @@ class VenueController extends Controller
             $ratings = collect($venue->ratings);
             $avg_rating = Calculations::calculate_average_rating($ratings);
 
-
             $venue->rating = $avg_rating;
             $venue->save();
 
@@ -160,6 +159,17 @@ class VenueController extends Controller
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
         };
+    }
+
+    public function get_rating_by_user_id(Request $request)
+    {
+        //@TODO: astract into a service
+        $venue = Venue::findOrFail($request->venue_id);
+        $user = User::findOrFail($request->user_id);
+        $user_rating = DB::table('ratings')
+            ->where('user_id', '=', $user->id)
+            ->where('rateable_id', '=', $venue->id)
+            ->first();
     }
 
 
