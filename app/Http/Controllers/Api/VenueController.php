@@ -150,7 +150,6 @@ class VenueController extends Controller
             }
 
             $ratings = collect($venue->ratings);
-            dd($ratings);
             $avg_rating = Calculations::calculate_average_rating($ratings);
 
 
