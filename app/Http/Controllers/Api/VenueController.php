@@ -52,8 +52,7 @@ class VenueController extends Controller
             $venue->save();
 
             $address_data = $data['address'];
-            $address = new Address($address_data);
-            $venue->address()->save($address);
+            $venue->setAddress($address_data);
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);

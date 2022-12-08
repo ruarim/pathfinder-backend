@@ -26,7 +26,9 @@ class VenueResource extends JsonResource
                 'address_1' => $this->address->address_1,
                 'town_city' => $this->address->town_city,
                 'postcode' => $this->address->postcode,
-                'country' => $this->address->country
+                'country' => $this->address->country,
+                'latitude' => $this->address->latitude,
+                'longitude' => $this->address->longitude,
             ],
             'atrributes' => AttributeResource::collection($this->attributes),
             'beverages' => BeverageResource::collection($this->beverages)
