@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VenueController;
 use App\Http\Controllers\Api\AttributeController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,15 @@ Route::resources([
     'venues.show' => VenueController::class,
     'attributes' => AttributeController::class
 ]);
+
+Route::prefix('user')->group(function () {
+});
+
+Route::group(['prefix' => 'user'], function () {
+    Route::get("/{id}", [UserController::class, 'show']);
+});
+
+
 
 Route::post('/venues/rate_venue', [VenueController::class, 'rate_venue']);
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
