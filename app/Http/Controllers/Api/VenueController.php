@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Calculations;
 use App\Models\Venue;
 use App\Models\Address;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class VenueController extends Controller
 {
@@ -127,17 +129,33 @@ class VenueController extends Controller
     public function rate_venue(Request $request)
     {
         try {
+            //Get venue, rating and user
             $venue = Venue::findOrFail($request->venue_id);
-            $rating = Rating::create([
-                'rating' => $request->rating
-            ]);
+            $user = User::findOrFail($request->user_id);
 
-            $venue->ratings()->save($rating);
+            $user_rating = DB::table('ratings')
+                                ->where('user_id', '=', $user->id)
+                                ->where('rateable_id', '=', $venue->id)
+                                ->first();
+
+            if ($user_rating) {
+                $rating = Rating::find($user_rating->id);
+                $rating->update(['rating' => $request->rating]);
+            } else {
+                $rating = Rating::create([
+                    'rating' => $request->rating,
+                    'user_id' => $user->id
+                ]);
+                $venue->ratings()->save($rating);
+            }
 
             $ratings = collect($venue->ratings);
+            dd($ratings);
+            $avg_rating = Calculations::calculate_average_rating($ratings);
 
-            $rating = new Rating();
-            $avg_rating = $rating->calculate_average_rating($ratings);
+
+            $venue->rating = $avg_rating;
+            $venue->save();
 
             return response(['message' => 'success'], 200);
         } catch (Exception $e) {

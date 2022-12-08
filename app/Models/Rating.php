@@ -11,6 +11,7 @@ class Rating extends Model
 
     protected $fillable = [
         'rating',
+        'user_id',
         'rateable_id',
         'rateable_type',
     ];
@@ -18,12 +19,5 @@ class Rating extends Model
     public function rateable()
     {
         return $this->morphTo();
-    }
-
-    public function calculate_average_rating($ratings): float
-    {
-        $sum = $ratings->reduce(fn ($acc, $val) =>$acc + $val['rating'], 0);
-        $total_ratings = $ratings->count();
-        return round($sum / $total_ratings, 2);
     }
 }

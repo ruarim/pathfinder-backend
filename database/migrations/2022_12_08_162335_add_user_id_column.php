@@ -12,8 +12,8 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::table('venues', function (Blueprint $table) {
-            $table->double('rating')->nullable()->change();
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->integer('user_id')->nullable();
         });
     }
 
@@ -22,4 +22,10 @@ return new class () extends Migration {
      *
      * @return void
      */
+    public function down()
+    {
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
+    }
 };
