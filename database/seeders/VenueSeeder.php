@@ -177,7 +177,7 @@ class VenueSeeder extends Seeder
                 ],
             ],
             [
-                'name' => "The Price of Wales",
+                'name' => "The Prince of Wales",
                 'capacity' => 150,
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
