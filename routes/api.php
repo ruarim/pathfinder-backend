@@ -29,7 +29,7 @@ Route::resources([
 Route::prefix('user')->group(function () {
 });
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get("/{id}", [UserController::class, 'show']);
 });
 

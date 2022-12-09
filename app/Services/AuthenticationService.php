@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,20 +19,20 @@ class AuthenticationService implements AuthenticationServiceInterface
      * @return void
      */
 
-    public function login(LoginRequest $loginRequest)
+    public function login(Request $loginRequest)
     {
-
-        $credentials = $loginRequest->only(['username', 'password']);
-        if (!Auth::once($credentials)) {
-            return response()->json(['error' => 'Unauthorised'], 401);
+        $credentials = $loginRequest->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Unauthorised, please check the details that you have provided.'
+             ], 404);
         }
 
         $user = Auth::getUser();
-        $token = $user->createToken('authToken')->accessToken->token;
-        return response()->json([
-            'user' => $user,
-            'token' =>  $token
-        ], 200);
+        dd($user);
     }
 
     public function register(RegisterRequest $registerRequest)
