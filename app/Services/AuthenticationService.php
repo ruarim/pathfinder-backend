@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\Contracts\AuthenticationServiceInterface;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +38,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         ], 200);
     }
 
-    public function register(RegisterRequest $registerRequest)
+    public function register(Request $registerRequest)
     {
         $user = User::create([
             'first_name' => $registerRequest->first_name,
@@ -53,7 +51,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         $token = $user->createToken('authToken')->plainTextToken;
 
         return [
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' =>  $token
         ];
     }

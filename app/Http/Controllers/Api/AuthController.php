@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -42,13 +40,11 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
         try {
-            $user = $this->authenticationService->register($request);
-            return response()->json([
-                'user' => $user
-            ]);
+            $res = $this->authenticationService->register($request);
+            return response($res, 200);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
