@@ -32,7 +32,12 @@ class AuthenticationService implements AuthenticationServiceInterface
         }
 
         $user = Auth::getUser();
-        dd($user);
+
+        $token = $user->createToken('authToken')->plainTextToken;
+        return response()->json([
+            'user' => $user,
+            'token' =>  $token
+        ], 200);
     }
 
     public function register(RegisterRequest $registerRequest)
@@ -45,7 +50,7 @@ class AuthenticationService implements AuthenticationServiceInterface
             'password' => Hash::make($registerRequest->password)
         ]);
 
-        $token = $user->createToken('authToken')->accessToken->token;
+        $token = $user->createToken('authToken')->plainTextToken;
 
         return [
             'user' => $user,

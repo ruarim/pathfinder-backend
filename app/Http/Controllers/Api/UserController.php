@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,6 +17,17 @@ class UserController extends Controller
      */
     public function index()
     {
+        try {
+            $user = Auth::user();
+            return response()->json([
+                'user' => new UserResource($user)
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Please sign in',
+                'exception' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -38,10 +49,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-
-        $resource = new UserResource($user);
-        return $resource;
+        //
     }
 
     /**
@@ -65,10 +73,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function get_user_by_token(Request $request)
-    {
-        //@TODO: Authentication is currently borked, I have hacked this together to get the ratings to work but needs a deeper look.
     }
 }

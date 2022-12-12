@@ -27,13 +27,13 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-            try {
-                return $this->authenticationService->login($request);
-            } catch(Exception $e){
-                return response()->json([
+        try {
+            return $this->authenticationService->login($request);
+        } catch(Exception $e) {
+            return response()->json([
                'message' => $e
             ], 404);
-            }
+        }
     }
 
     /**
@@ -46,7 +46,9 @@ class AuthController extends Controller
     {
         try {
             $user = $this->authenticationService->register($request);
-            return response($user, Response::HTTP_CREATED);
+            return response()->json([
+                'user' => $user
+            ]);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }

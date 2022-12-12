@@ -26,14 +26,11 @@ Route::resources([
     'attributes' => AttributeController::class
 ]);
 
-Route::prefix('user')->group(function () {
-});
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
+    Route::get("", [UserController::class, 'index']);
     Route::get("/{id}", [UserController::class, 'show']);
 });
-
-
 
 Route::post('/venues/rate_venue', [VenueController::class, 'rate_venue']);
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
