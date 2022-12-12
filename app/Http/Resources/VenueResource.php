@@ -29,7 +29,7 @@ class VenueResource extends JsonResource
                 'latitude' => $this->address->latitude,
                 'longitude' => $this->address->longitude,
             ],
-            'atrributes' => AttributeResource::collection($this->attributes),
+            'attributes' => AttributeResource::collection($this->attributes),
             'beverages' => BeverageResource::collection($this->beverages)
         ];
     }
