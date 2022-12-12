@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,7 @@ class AuthController extends Controller
         $this->authenticationService = $_authenticationService;
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
         try {
             return $this->authenticationService->login($request);
