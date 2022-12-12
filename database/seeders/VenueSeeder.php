@@ -108,7 +108,7 @@ class VenueSeeder extends Seeder
                     'postcode' => "BS7 8TN",
                     'country' => "England",
                 ],
-                'attributes' => ["Pool", "Real Ale", "Beer Graden", "Live Sport"],
+                'attributes' => ["Pool", "Real Ale", "Beer Garden", "Live Sport"],
                 'beverages' => [
                     [
                         "name" => "Stella Artois",
@@ -148,7 +148,7 @@ class VenueSeeder extends Seeder
                     'postcode' => "BS7 8TN",
                     'country' => "England",
                 ],
-                'attributes' => ["Real Ale", "Beer Graden", "DJ"],
+                'attributes' => ["Real Ale", "Beer Garden", "DJ"],
                 'beverages' => [
                     [
                         "name" => "Mad Goose",
@@ -177,7 +177,7 @@ class VenueSeeder extends Seeder
                 ],
             ],
             [
-                'name' => "The Price of Wales",
+                'name' => "The Prince of Wales",
                 'capacity' => 150,
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
@@ -188,7 +188,7 @@ class VenueSeeder extends Seeder
                     'postcode' => "BS7 8AA",
                     'country' => "England",
                 ],
-                'attributes' => ["Real Ale", "Beer Graden"],
+                'attributes' => ["Real Ale", "Beer Garden"],
                 'beverages' => [
                     [
                         "name" => "Stella Artois",
@@ -228,7 +228,7 @@ class VenueSeeder extends Seeder
                     'postcode' => "BS6 5QX",
                     'country' => "England",
                 ],
-                "attributes" => ["Live Music", "Beer Graden", "Karaoke",  "Pool", "Darts"],
+                "attributes" => ["Live Music", "Beer Garden", "Karaoke",  "Pool", "Darts"],
                 "beverages" => [
                     [
                         "name" => "BOB",
