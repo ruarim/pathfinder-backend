@@ -29,12 +29,11 @@ Route::resources([
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get("", [UserController::class, 'index']);
-    Route::get("/rating", [UserController::class, 'get_rating']);
     Route::get("/{id}", [UserController::class, 'show']);
 });
 
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('/{venue}/rating', [VenueController::class, 'rate']);
+    Route::get('/{venue}/rating', [VenueController::class, 'get_rating']);
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
 });
 

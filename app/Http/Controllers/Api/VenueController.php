@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contracts\VenueServiceInterface;
 use App\Helpers\Calculations;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
+use App\Http\Resources\RatingResource;
 use App\Http\Resources\VenueResource;
 use App\Models\Rating;
-use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class VenueController extends Controller
 {
@@ -149,13 +147,14 @@ class VenueController extends Controller
         return response(['message' => 'success'], 200);
     }
 
-    public function get_rating_by_user_id(Request $request, Authenticatable $user)
+    public function get_rating(Request $request, Authenticatable $user)
     {
         $venue = Venue::findOrFail($request->venue_id);
-        $user_rating = Rating::where('user_id', '=', $user->id)
+        $rating = Rating::where('user_id', '=', $user->id)
                 ->where('rateable_id', '=', $venue->id)
                 ->first();
-        return $user_rating;
+
+        return new RatingResource($rating);
     }
 
 

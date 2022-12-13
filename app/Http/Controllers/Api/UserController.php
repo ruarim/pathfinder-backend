@@ -75,17 +75,4 @@ class UserController extends Controller
     {
         //
     }
-
-    public function get_rating(Request $request)
-    {
-        $user = Auth::user();
-        $venue = Venue::findOrFail($request->venue_id);
-
-        $user_rating = DB::table('ratings')
-            ->where('user_id', '=', $user->id)
-            ->where('rateable_id', '=', $venue->id)
-            ->first();
-
-        return $user_rating;
-    }
 }
