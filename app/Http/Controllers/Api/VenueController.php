@@ -147,9 +147,9 @@ class VenueController extends Controller
         return response(['message' => 'success'], 200);
     }
 
-    public function get_rating(Request $request, Authenticatable $user)
+    public function get_rating(int $id, Authenticatable $user)
     {
-        $venue = Venue::findOrFail($request->venue_id);
+        $venue = Venue::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
                 ->where('rateable_id', '=', $venue->id)
                 ->first();

@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Exception;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -49,5 +51,11 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
+    }
+
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        return response(["message" => "success"], 200);
     }
 }
