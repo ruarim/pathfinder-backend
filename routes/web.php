@@ -23,7 +23,3 @@ Route::prefix('venues')->group(function () {
     Route::get('create', [VenueController::class, 'create'])->name('create');
     Route::post('store', [VenueController::class, 'store'])->name('store');
 });
-
-Route::prefix('users')->group(function () {
-    Route::get('', [UserController::class, 'index'])->name('users');
-});

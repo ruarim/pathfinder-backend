@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\AuthenticationServiceInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Exception;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -27,13 +28,13 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-            try {
-                return $this->authenticationService->login($request);
-            } catch(Exception $e){
-                return response()->json([
+        try {
+            return $this->authenticationService->login($request);
+        } catch(Exception $e) {
+            return response()->json([
                'message' => $e
             ], 404);
-            }
+        }
     }
 
     /**
@@ -45,10 +46,16 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-            $user = $this->authenticationService->register($request);
-            return response($user, Response::HTTP_CREATED);
+            $res = $this->authenticationService->register($request);
+            return response($res, 200);
         } catch (Exception $e) {
             return response()->json($e, 500);
         }
+    }
+
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        return response(["message" => "success"], 200);
     }
 }

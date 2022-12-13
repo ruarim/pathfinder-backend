@@ -33,6 +33,7 @@ class VenueController extends Controller
         $address = new Address($data);
         $venue->address()->save($address);
         //@TODO redirect to individual pub
+        // return redirect("/venues/{$venue->id}", ['venue'=> $venue]);
     }
 
     public function find($id)

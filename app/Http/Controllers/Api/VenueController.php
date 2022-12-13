@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Calculations;
 use App\Models\Venue;
-use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
+use App\Http\Resources\RatingResource;
 use App\Http\Resources\VenueResource;
+use App\Models\Rating;
 use Exception;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 
 class VenueController extends Controller
@@ -83,7 +86,9 @@ class VenueController extends Controller
     public function attributes_search(Request $request)
     {
         $attributes = $request->query('attributes');
-        if ($attributes == null) return response(['message' => 'no attributes provided'], 200);
+        if ($attributes == null) {
+            return response(['message' => 'no attributes provided'], 200);
+        }
         $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
             $query->whereIn('name', $attributes);
         }, '>=', count($attributes))->get();
@@ -116,8 +121,42 @@ class VenueController extends Controller
      */
     public function update(Request $request, Venue $venue)
     {
-        //
     }
+
+    //Validate Request Object
+    public function rate(Request $request, Venue $venue, Authenticatable $user)
+    {
+        //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
+        Rating::updateOrCreate(
+            [
+            'rateable_id' => $venue->id,
+            'rateable_type' => Venue::class,
+            'user_id' => $user->id,
+            ],
+            [
+                'rating' => $request->rating
+            ]
+        );
+
+        //Turn ratings into collection so that we can reduce over for the average.
+        $ratings = collect($venue->ratings);
+        $avg_rating = Calculations::calculate_average_rating($ratings);
+        $venue->rating = $avg_rating;
+
+        $venue->save();
+        return response(['message' => 'success'], 200);
+    }
+
+    public function get_rating(int $id, Authenticatable $user)
+    {
+        $venue = Venue::findOrFail($id);
+        $rating = Rating::where('user_id', '=', $user->id)
+                ->where('rateable_id', '=', $venue->id)
+                ->first();
+
+        return new RatingResource($rating);
+    }
+
 
     /**
      * Remove the specified resource from storage.

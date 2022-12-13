@@ -22,7 +22,6 @@ class Venue extends Model
         'capacity',
         'opening_time',
         'closing_time',
-        'rating',
         'venue_type',
     ];
 
@@ -55,6 +54,12 @@ class Venue extends Model
         $this->beverages()->sync($beverages->pluck("id"));
 
         return $this;
+    }
+
+
+    public function ratings()
+    {
+        return $this->morphMany(Rating::class, 'rateable');
     }
 
     public function setAddress(array $address_data): Venue
