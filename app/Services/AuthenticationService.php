@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Contracts\AuthenticationServiceInterface;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,16 +19,12 @@ class AuthenticationService implements AuthenticationServiceInterface
      * @return void
      */
 
-    public function login(Request $loginRequest)
+    public function login(LoginRequest $loginRequest)
     {
-        $credentials = $loginRequest->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($loginRequest->validated())) {
             return response()->json([
                 'message' => 'Unauthorised, please check the details that you have provided.'
-             ], 404);
+             ], 403);
         }
 
         $user = Auth::getUser();
@@ -38,7 +36,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         ], 200);
     }
 
-    public function register(Request $registerRequest)
+    public function register(RegisterRequest $registerRequest)
     {
         $user = User::create([
             'first_name' => $registerRequest->first_name,

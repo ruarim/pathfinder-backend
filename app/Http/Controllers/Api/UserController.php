@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Venue;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -49,7 +51,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -73,5 +74,18 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function get_rating(Request $request)
+    {
+        $user = Auth::user();
+        $venue = Venue::findOrFail($request->venue_id);
+
+        $user_rating = DB::table('ratings')
+            ->where('user_id', '=', $user->id)
+            ->where('rateable_id', '=', $venue->id)
+            ->first();
+
+        return $user_rating;
     }
 }

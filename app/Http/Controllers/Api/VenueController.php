@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Contracts\VenueServiceInterface;
 use App\Helpers\Calculations;
 use App\Models\Venue;
-use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
@@ -12,8 +12,8 @@ use App\Http\Resources\VenueResource;
 use App\Models\Rating;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class VenueController extends Controller
@@ -125,50 +125,37 @@ class VenueController extends Controller
     {
     }
 
-    public function rate_venue(Request $request)
+    //Validate Request Object
+    public function rate(Request $request, Venue $venue, Authenticatable $user)
     {
-        try {
-            //Get venue, rating and user
-            $venue = Venue::findOrFail($request->venue_id);
-            $user = User::findOrFail($request->user_id);
+        //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
+        Rating::updateOrCreate(
+            [
+            'rateable_id' => $venue->id,
+            'rateable_type' => Venue::class,
+            'user_id' => $user->id,
+            ],
+            [
+                'rating' => $request->rating
+            ]
+        );
 
-            $user_rating = DB::table('ratings')
-                                ->where('user_id', '=', $user->id)
-                                ->where('rateable_id', '=', $venue->id)
-                                ->first();
+        //Turn ratings into collection so that we can reduce over for the average.
+        $ratings = collect($venue->ratings);
+        $avg_rating = Calculations::calculate_average_rating($ratings);
+        $venue->rating = $avg_rating;
 
-            if ($user_rating) {
-                $rating = Rating::find($user_rating->id);
-                $rating->update(['rating' => $request->rating]);
-            } else {
-                $rating = Rating::create([
-                    'rating' => $request->rating,
-                    'user_id' => $user->id
-                ]);
-                $venue->ratings()->save($rating);
-            }
-
-            $ratings = collect($venue->ratings);
-            $avg_rating = Calculations::calculate_average_rating($ratings);
-
-            $venue->rating = $avg_rating;
-            $venue->save();
-
-            return response(['message' => 'success'], 200);
-        } catch (Exception $e) {
-            return response(['message' => $e->getMessage()], 400);
-        };
+        $venue->save();
+        return response(['message' => 'success'], 200);
     }
 
-    public function get_rating_by_user_id(Request $request)
+    public function get_rating_by_user_id(Request $request, Authenticatable $user)
     {
-        //@TODO: astract into a service
         $venue = Venue::findOrFail($request->venue_id);
-        $user = User::findOrFail($request->user_id);
-        $user_rating = DB::table('ratings')
-            ->where('user_id', '=', $user->id)
-            ->where('rateable_id', '=', $venue->id)
-            ->first();
+        $user_rating = Rating::where('user_id', '=', $user->id)
+                ->where('rateable_id', '=', $venue->id)
+                ->first();
+        return $user_rating;
     }
 
 

@@ -29,9 +29,14 @@ Route::resources([
 
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get("", [UserController::class, 'index']);
+    Route::get("/rating", [UserController::class, 'get_rating']);
     Route::get("/{id}", [UserController::class, 'show']);
 });
 
-Route::post('/venues/rate_venue', [VenueController::class, 'rate_venue']);
+Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/{venue}/rating', [VenueController::class, 'rate']);
+    Route::post('/{venue}/rate', [VenueController::class, 'rate']);
+});
+
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);
 Route::get('name_search', [VenueController::class, 'name_search']);
