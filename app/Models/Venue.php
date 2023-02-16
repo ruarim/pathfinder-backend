@@ -64,6 +64,7 @@ class Venue extends Model
 
     public function setAddress(array $address_data): Venue
     {
+        //@dev needs error handling?
         $address_1 = $address_data['address_1'];
         $city = $address_data['town_city'];
         $country = $address_data['country'];
