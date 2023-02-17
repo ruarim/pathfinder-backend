@@ -5,10 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Helpers\Calculations;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PathResource;
+use App\Http\Resources\RatingResource;
 use App\Models\Path;
 use App\Models\Rating;
 use App\Models\User;
-use ErrorException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,6 +92,41 @@ class PathController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Path  $path
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Path $path)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Path  $path
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Path $path)
+    {
+        //$participants = $request["participants"] //list of ids??
+        //setParticipants($participants)
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Path  $path
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Path $path)
+    {
+        //
+    }
+
     public function completed(int $id)
     {
         try {
@@ -109,16 +144,15 @@ class PathController extends Controller
     public function update_participants(int $path_id, Request $request)
     {
         try {
-            //if participant exist remove else add participant
             $user_id = $request['user_id'];
-            $is_delete = $request['is_delete'];
+            $remove = $request['remove'];
             $user = User::find($user_id);
             $path = Path::find($path_id);
 
             if (!$user) throw new Exception('user_id does not exist');
             if (!$path) throw new Exception('path_id does not exisit');
 
-            $path->setParticipant($user->id, $is_delete);
+            $path->setParticipant($user->id, $remove);
 
             return new PathResource($path);
         } catch (Exception $e) {
@@ -156,41 +190,6 @@ class PathController extends Controller
             ->where('rateable_id', '=', $path->id)
             ->first();
 
-        return new PathResource($rating);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Path  $path
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Path $path)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Path  $path
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Path $path)
-    {
-        //$participants = $request["participants"] //list of ids??
-        //setParticipants($participants)
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Path  $path
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Path $path)
-    {
-        //
+        return new RatingResource($rating);
     }
 }

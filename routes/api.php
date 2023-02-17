@@ -37,7 +37,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 });
 
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('/{venue}/rating', [VenueController::class, 'get_rating']); //@dev {venue} should be {id}
+    Route::get('/{venue}/rating', [VenueController::class, 'get_rating']);
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
 });
 
@@ -46,6 +46,8 @@ Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () 
     Route::get('/{id}', [PathController::class, 'show']);
     Route::post('/{id}/completed', [PathController::class, 'completed']);
     Route::post('/{id}/participants', [PathController::class, 'update_participants']);
+    Route::get('/{path}/rating', [PathController::class, 'get_rating']);
+    Route::post('/{path}/rate', [PathController::class, 'rate']);
 });
 
 Route::get('attributes_search', [VenueController::class, 'attributes_search']);

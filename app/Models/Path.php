@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,16 +41,15 @@ class Path extends Model
     }
 
     //should this be called update participants
-    public function setParticipant(int $user_id, bool $is_delete) //setParticipants and setCreator seperate functions called here
+    public function setParticipant(int $user_id, bool $remove)
     {
-        //MAYBE SHOULD MAKE SEPERATE REMOVE FUNCTION.
-        $user = $this->users()->find($user_id, ['user_id']); //does this work
+        $user = $this->users()->find($user_id, ['user_id']);
 
         //if creator dont do anything
         if ($user && $user->pivot->is_creator) return 'provided user is path creator';
 
-        //if delete remove user from path
-        if ($is_delete && $user)
+        //remove user from path
+        if ($remove && $user)
             $this->users()->detach($user_id);
         //else add user to path if they are not already added.
         else if (!$user) $this->users()->attach($user_id);

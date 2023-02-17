@@ -124,14 +124,14 @@ class VenueController extends Controller
     }
 
     //Validate Request Object
-    public function rate(Request $request, Venue $venue, Authenticatable $user)
+    public function rate(Request $request, Venue $venue, Authenticatable $user) //@dev how does $venue object get created
     {
         //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
         Rating::updateOrCreate(
             [
-            'rateable_id' => $venue->id,
-            'rateable_type' => Venue::class,
-            'user_id' => $user->id,
+                'rateable_id' => $venue->id,
+                'rateable_type' => Venue::class,
+                'user_id' => $user->id,
             ],
             [
                 'rating' => $request->rating
@@ -151,9 +151,8 @@ class VenueController extends Controller
     {
         $venue = Venue::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
-                ->where('rateable_id', '=', $venue->id)
-                ->first();
-
+            ->where('rateable_id', '=', $venue->id)
+            ->first();
         return new RatingResource($rating);
     }
 
