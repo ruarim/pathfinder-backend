@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Calculations;
+use App\helpers\Calculations;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -153,6 +153,7 @@ class VenueController extends Controller
         $rating = Rating::where('user_id', '=', $user->id)
             ->where('rateable_id', '=', $venue->id)
             ->first();
+
         return new RatingResource($rating);
     }
 
