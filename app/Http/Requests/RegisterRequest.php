@@ -35,7 +35,7 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'The email address that provided is already in use.',
+            'email.required' => 'The email address provided is already in use.',
         ];
     }
 }
