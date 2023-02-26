@@ -45,18 +45,6 @@ class PathController extends Controller
      */
     public function store(Request $request) //@dev create PathRequest
     {
-        // try {
-        //     $user = Auth::user();
-        //     return response()->json([
-        //         'path' => 'path resource'
-        //     ]);
-        // } catch (Exception $e) {
-        //     return response()->json([
-        //         'message' => 'Please sign in',
-        //         'exception' => $e->getMessage()
-        //     ]);
-        //}
-
         try {
             $user = Auth::user();
 
@@ -112,8 +100,6 @@ class PathController extends Controller
      */
     public function update(Request $request, Path $path)
     {
-        //$participants = $request["participants"] //list of ids??
-        //setParticipants($participants)
     }
 
     /**
