@@ -124,7 +124,7 @@ class VenueController extends Controller
     }
 
     //Validate Request Object
-    public function rate(Request $request, Venue $venue, Authenticatable $user)
+    public function rate(Request $request, Venue $venue, Authenticatable $user) //@dev how does $venue object get created
     {
         //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
         Rating::updateOrCreate(
