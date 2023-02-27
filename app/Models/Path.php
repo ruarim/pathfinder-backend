@@ -59,7 +59,7 @@ class Path extends Model
         return $this;
     }
 
-    public function setCompleted(int $user_id) //pass
+    public function setCompleted(int $user_id)
     {
         if (!$this->users()->find($user_id, ['user_id'])) return throw new Exception('user_id does not exist on path');;
 
