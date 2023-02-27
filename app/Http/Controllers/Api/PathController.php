@@ -122,6 +122,7 @@ class PathController extends Controller
             if (!$path) throw new Exception('path_id doesnt exist');
 
             $path->setCompleted($user->id);
+            return response(['message' => 'success - path completed'], 200);
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
         }

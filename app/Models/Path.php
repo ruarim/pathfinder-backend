@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +26,7 @@ class Path extends Model
         //venues should be passed in stop order
         $syncData = [];
 
+        //add stop numbers
         foreach (range(0, count($ids) - 1) as $index) {
             $syncData[$ids[$index]] = ['stop_number' => $index];
         }
@@ -57,9 +59,11 @@ class Path extends Model
         return $this;
     }
 
-    public function setCompleted(array $user_id) //pass
+    public function setCompleted(int $user_id) //pass
     {
-        $this->users()->updateExistingPivot([$user_id], ["set_completed" => true]);
+        if (!$this->users()->find($user_id, ['user_id'])) return throw new Exception('user_id does not exist on path');;
+
+        $this->users()->updateExistingPivot($user_id, ["has_completed" => true]);
     }
 
     public function venues()
