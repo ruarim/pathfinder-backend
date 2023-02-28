@@ -41,9 +41,10 @@ Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
 });
 
+Route::get('paths/{id}', [PathController::class, 'show']);
+
 Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [PathController::class, 'store']);
-    Route::get('/{id}', [PathController::class, 'show']);
     Route::post('/{id}/completed', [PathController::class, 'completed']);
     Route::post('/{id}/participants', [PathController::class, 'update_participants']);
     Route::get('/{path}/rating', [PathController::class, 'get_rating']);
