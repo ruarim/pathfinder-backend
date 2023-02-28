@@ -17,7 +17,13 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'email' => $this->email
+            'email' => $this->email,
+            'is_creator' => $this->whenPivotLoaded('path_user', function () {
+                return $this->pivot->is_creator;
+            }),
+            'has_completed' => $this->whenPivotLoaded('path_user', function () {
+                return $this->pivot->has_completed;
+            }),
         ];
     }
 }

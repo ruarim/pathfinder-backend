@@ -14,10 +14,21 @@ class PathResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray([
-            $this,
-            VenueResource::collection($this->venues),
-            UserResource::collection($this->users),
-        ]);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'startpoint_name' => $this->startpoint_name,
+            'startpoint_lat' => $this->startpoint_lat,
+            'startpoint_long' => $this->startpoint_long,
+            'endpoint_name' => $this->endpoint_name,
+            'endpoint_lat' => $this->endpoint_lat,
+            'endpoint_long' => $this->endpoint_long,
+            'rating' => $this->rating,
+            'is_public' => $this->is_public,
+            'venues' => VenueResource::collection($this->venues),
+            'users' => UserResource::collection($this->users),
+        ];
     }
 }
