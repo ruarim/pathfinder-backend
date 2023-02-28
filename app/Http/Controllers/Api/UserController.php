@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,5 +73,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function email_search(Request $request)
+    {
+        $email = $request->query('email');
+        if ($email == '') return response()->json([
+            'message' => 'enter more characters',
+        ]);
+        $users = User::where('email', 'LIKE', "%{$email}%")->get();
+
+        return UserResource::collection($users);
     }
 }

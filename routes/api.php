@@ -51,5 +51,6 @@ Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () 
     Route::post('/{path}/rate', [PathController::class, 'rate']);
 });
 
-Route::get('attributes_search', [VenueController::class, 'attributes_search']);
-Route::get('name_search', [VenueController::class, 'name_search']);
+Route::get('venue_attributes_search', [VenueController::class, 'attributes_search']);
+Route::get('venue_name_search', [VenueController::class, 'name_search']);
+Route::get("user_email_search", [UserController::class, 'email_search']);

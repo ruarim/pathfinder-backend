@@ -131,9 +131,9 @@ class PathController extends Controller
     public function update_participants(int $path_id, Request $request)
     {
         try {
-            $user_id = $request['user_id'];
+            $email = $request['email'];
             $remove = $request['remove'];
-            $user = User::find($user_id);
+            $user = User::where('email', $email)->first();
             $path = Path::find($path_id);
 
             if (!$user) throw new Exception('user_id does not exist');
