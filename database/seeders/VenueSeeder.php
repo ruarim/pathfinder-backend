@@ -257,13 +257,16 @@ class VenueSeeder extends Seeder
                 ],
             ],
         ])->each(function ($data) {
-            $venue = new Venue([
+            $venue = Venue::firstOrCreate([
                 "name" => $data["name"],
                 "capacity" => $data["capacity"],
                 "venue_type" => $data["venue_type"],
                 "opening_time" => $data["opening_time"],
                 "closing_time" => $data["closing_time"],
             ]);
+
+            if (!$venue) return;
+
             $venue->save();
 
             $address_data = $data['address'];
