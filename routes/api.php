@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VenueController;
 use App\Http\Controllers\Api\AttributeController;
-use App\Http\Controllers\api\PathController;
+use App\Http\Controllers\Api\PathController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
