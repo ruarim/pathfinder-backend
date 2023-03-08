@@ -12,7 +12,6 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 class PathController extends Controller
