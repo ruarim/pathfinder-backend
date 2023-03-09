@@ -55,6 +55,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://i2-prod.bristolpost.co.uk/incoming/article3761464.ece/ALTERNATES/s615/0_BM_BRI_210120TheGrace_02.jpg'],
             ],
             [
                 'name' => "The Anchor",
@@ -95,6 +96,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://static.designmynight.com/uploads/2020/10/anc14-optimised.png'],
             ],
             [
                 'name' => "The Royal Oak",
@@ -135,6 +137,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://media-cdn.tripadvisor.com/media/photo-s/0f/a2/ef/ea/warm-and-inviting-bar.jpg'],
             ],
             [
                 'name' => "The Bristol Flyer",
@@ -175,6 +178,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://www.theflyerbristol.co.uk/content/dam/castle/pub-images/theflyerbristol/theflyerbristol-gallery3.jpg'],
             ],
             [
                 'name' => "The Prince of Wales",
@@ -215,6 +219,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://i2-prod.bristolpost.co.uk/incoming/article23815.ece/ALTERNATES/s615b/prince-of-wales.jpg'],
             ],
             [
                 "name" => "The Cat and Wheel",
@@ -255,6 +260,7 @@ class VenueSeeder extends Seeder
                         "country" => "England"
                     ]
                 ],
+                'images' => ['https://i2-prod.bristolpost.co.uk/news/bristol-news/article4625885.ece/ALTERNATES/s615/0_Cat-and-Wheel.png'],
             ],
         ])->each(function ($data) {
             $venue = Venue::firstOrCreate([
@@ -277,6 +283,9 @@ class VenueSeeder extends Seeder
 
             $beverages_data = $data['beverages'];
             $venue->setBeverages($beverages_data);
+
+            $images_urls = $data['images'];
+            $venue->setImages($images_urls);
 
             return $venue;
         });
