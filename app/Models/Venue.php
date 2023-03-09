@@ -40,16 +40,6 @@ class Venue extends Model
         return $this->belongsToMany(Beverage::class);
     }
 
-    public function ratings()
-    {
-        return $this->morphMany(Rating::class, 'rateable');
-    }
-
-    public function favourites()
-    {
-        return $this->morphToMany(Favourite::class, 'favouriteable');
-    }
-
     public function setAttributes(array $strings): Venue
     {
         $attributes = Attribute::fromStrings($strings);
@@ -66,9 +56,15 @@ class Venue extends Model
         return $this;
     }
 
+
+    public function ratings()
+    {
+        return $this->morphMany(Rating::class, 'rateable');
+    }
+
     public function setAddress(array $address_data): Venue
     {
-        //@dev needs error handling
+        //@dev needs error handling?
         $address_1 = $address_data['address_1'];
         $city = $address_data['town_city'];
         $country = $address_data['country'];
