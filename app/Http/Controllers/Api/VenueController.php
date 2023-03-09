@@ -159,6 +159,7 @@ class VenueController extends Controller
         return response(['message' => 'success'], 200);
     }
 
+    //add favourite
     public function favourite(Request $request, Venue $venue, Authenticatable $user)
     {
         $remove = $request['remove'];
