@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Address;
 use App\Models\Attribute;
+use App\Models\Image;
 use Illuminate\Support\Facades\Http;
 
 class Venue extends Model
@@ -50,6 +51,11 @@ class Venue extends Model
         return $this->morphToMany(Favourite::class, 'favouriteable');
     }
 
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
     public function setAttributes(array $strings): Venue
     {
         $attributes = Attribute::fromStrings($strings);
@@ -80,6 +86,12 @@ class Venue extends Model
 
         $address = new Address($address_data);
         $this->address()->save($address);
+        return $this;
+    }
+
+    public function setImages(array $urls): Venue
+    {
+        Image::fromStrings($urls, $this->id);
         return $this;
     }
 }
