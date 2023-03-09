@@ -39,6 +39,9 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/{venue}/rating', [VenueController::class, 'get_rating']);
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
+    Route::post('/{venue}/favourite', [VenueController::class, 'favourite']);
+    Route::get('/{venue}/favourited', [VenueController::class, 'get_favourite']);
+    Route::get('/user/favourites', [VenueController::class, 'get_user_favourites']);
 });
 
 Route::get('paths/{id}', [PathController::class, 'show']);

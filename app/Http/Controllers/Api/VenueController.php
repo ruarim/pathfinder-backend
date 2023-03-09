@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\RatingResource;
 use App\Http\Resources\VenueResource;
+use App\Models\Favourite;
 use App\Models\Rating;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -83,25 +84,6 @@ class VenueController extends Controller
         }
     }
 
-    public function attributes_search(Request $request)
-    {
-        $attributes = $request->query('attributes');
-        if ($attributes == null) {
-            return response(['message' => 'no attributes provided'], 200);
-        }
-        $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
-            $query->whereIn('name', $attributes);
-        }, '>=', count($attributes))->get();
-        return VenueResource::collection($venues);
-    }
-
-    public function name_search(Request $request)
-    {
-        $search = $request->query('name');
-        $venues = Venue::where('name', 'LIKE', "%{$search}%")->get();
-
-        return VenueResource::collection($venues);
-    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -121,6 +103,36 @@ class VenueController extends Controller
      */
     public function update(Request $request, Venue $venue)
     {
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Venue  $venue
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Venue $venue)
+    {
+    }
+
+    public function attributes_search(Request $request)
+    {
+        $attributes = $request->query('attributes');
+        if ($attributes == null) {
+            return response(['message' => 'no attributes provided'], 200);
+        }
+        $venues = Venue::whereHas('attributes', function (Builder $query) use ($attributes) {
+            $query->whereIn('name', $attributes);
+        }, '>=', count($attributes))->get();
+        return VenueResource::collection($venues);
+    }
+
+    public function name_search(Request $request)
+    {
+        $search = $request->query('name');
+        $venues = Venue::where('name', 'LIKE', "%{$search}%")->get();
+
+        return VenueResource::collection($venues);
     }
 
     //Validate Request Object
@@ -147,6 +159,54 @@ class VenueController extends Controller
         return response(['message' => 'success'], 200);
     }
 
+    public function favourite(Request $request, Venue $venue, Authenticatable $user)
+    {
+        $remove = $request['remove'];
+        $user_id = $user->id;
+
+        //get favourite
+        $favourite = Favourite::where('user_id', '=', $user->id)
+            ->where('favouriteable_id', '=', $venue->id)
+            ->first();
+
+        if ($remove && $favourite) {
+            $favourite->delete();
+            return response(['message' => 'favourite removed'], 200);
+        }
+
+        if (!$favourite) {
+            Favourite::create([
+                'favouriteable_id' => $venue->id,
+                'favouriteable_type' => Venue::class,
+                'user_id' => $user_id,
+            ]);
+            return response(['message' => 'success'], 200);
+        } else return response(['message' => 'already favourited'], 200);
+    }
+
+    public function get_favourite(int $id, Authenticatable $user)
+    {
+        $venue = Venue::findOrFail($id);
+        $favourite = Favourite::where('user_id', '=', $user->id)
+            ->where('favouriteable_id', '=', $venue->id)
+            ->first();
+        if ($favourite) {
+            return response(['favourited' => true], 200);
+        } else return response(['favourited' => false], 200);
+    }
+
+    public function get_user_favourites(Authenticatable $user)
+    {
+        $venue_ids = Favourite::where('user_id', '=', $user->id)
+            ->where('favouriteable_type', '=', Venue::class)
+            ->pluck('favouriteable_id');
+
+        $venues = Venue::whereIn('id', $venue_ids)
+            ->get();
+
+        return VenueResource::collection($venues);
+    }
+
     public function get_rating(int $id, Authenticatable $user)
     {
         $venue = Venue::findOrFail($id);
@@ -155,17 +215,5 @@ class VenueController extends Controller
             ->first();
 
         return new RatingResource($rating);
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Venue $venue)
-    {
-        //
     }
 }
