@@ -32,7 +32,8 @@ class VenueResource extends JsonResource
                 'longitude' => $this->address->longitude,
             ],
             'attributes' => AttributeResource::collection($this->attributes),
-            'beverages' => BeverageResource::collection($this->beverages)
+            'beverages' => BeverageResource::collection($this->beverages),
+            'images' => $this->images->pluck('url')
         ];
     }
 }
