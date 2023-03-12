@@ -22,6 +22,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "00:00",
+                'description' => 'Creative pub plates with locally sourced ingredients served in relaxed surrounds with outdoor seats.',
                 'address' => [
                     'address_1' => "197 Gloucester Road",
                     'town_city' => "Bristol",
@@ -62,6 +63,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "22:00",
+                'description' => 'Upbeat pub with colourful decor & a patio for classic plates, clever cocktails & draft beer.',
                 'address' => [
                     'address_1' => "323 Gloucester Road",
                     'town_city' => "Bristol",
@@ -102,6 +104,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "23:00",
+                'description' => 'Family-friendly pub with sofas and a light bar, a terrace and garden, plus wood-fired pizza oven.',
                 'address' => [
                     'address_1' => "385 Gloucester Road",
                     'town_city' => "Bristol",
@@ -142,6 +145,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "23:00",
+                'description' => 'Huge pub specialising in local ciders and real ales with cosy booth seating and a patio garden.',
                 'address' => [
                     'address_1' => "385 Gloucester Road",
                     'town_city' => "Bristol",
@@ -182,6 +186,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "22:00",
+                'description' => 'Classic pub with rustic-style decor offering cask ales and simple food, plus a garden and TV sports.',
                 'address' => [
                     'address_1' => "5 Gloucester Road",
                     'town_city' => "Bristol",
@@ -222,6 +227,7 @@ class VenueSeeder extends Seeder
                 'venue_type' => 'Pub',
                 'opening_time' => '12:00',
                 "closing_time" => "01:00",
+                'description' => 'Live music, karaoke and disco, plus sports TV, pool, darts plus a heated beer garden at buzzing pub.',
                 'address' => [
                     'address_1' => "207 Cheltenham Road",
                     'town_city' => "Bristol",
@@ -263,6 +269,7 @@ class VenueSeeder extends Seeder
                 "venue_type" => $data["venue_type"],
                 "opening_time" => $data["opening_time"],
                 "closing_time" => $data["closing_time"],
+                "description" => $data["description"],
             ]);
 
             if (!$venue) return;

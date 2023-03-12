@@ -23,6 +23,7 @@ class Venue extends Model
         'opening_time',
         'closing_time',
         'venue_type',
+        'description'
     ];
 
     public function address()
