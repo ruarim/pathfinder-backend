@@ -174,6 +174,7 @@ class PathController extends Controller
         $path = Path::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
             ->where('rateable_id', '=', $path->id)
+            ->where('rateable_type', '=', Path::class)
             ->first();
 
         return new RatingResource($rating);

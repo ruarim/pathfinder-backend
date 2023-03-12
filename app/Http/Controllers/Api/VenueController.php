@@ -195,6 +195,7 @@ class VenueController extends Controller
         $venue = Venue::findOrFail($id);
         $favourite = Favourite::where('user_id', '=', $user->id)
             ->where('favouriteable_id', '=', $venue->id)
+            ->where('favouriteable_type', '=', Venue::class)
             ->first();
         if ($favourite) {
             return response(['favourited' => true], 200);
@@ -218,6 +219,7 @@ class VenueController extends Controller
         $venue = Venue::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
             ->where('rateable_id', '=', $venue->id)
+            ->where('rateable_type', '=', Venue::class)
             ->first();
 
         return new RatingResource($rating);
@@ -239,7 +241,6 @@ class VenueController extends Controller
     public function get_reviews(int $id)
     {
         $reviews = Review::where('venue_id', '=', $id)->get();
-
         return ReviewResource::collection($reviews);
     }
 }
