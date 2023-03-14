@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Helpers\Calculations;
+use App\helpers\Calculations;
 use App\Models\Rating;
 use App\Models\Review;
 use App\Models\User;
