@@ -24,7 +24,7 @@ class Image extends Model
     {
         return collect($strings)->map(fn ($str) => trim($str))
             ->unique()
-            ->map(fn ($str) => Image::create([
+            ->map(fn ($str) => Image::firstOrCreate([
                 "venue_id" => $id,
                 "url" => $str
             ]));

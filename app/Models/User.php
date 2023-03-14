@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(Rating::class, 'rateable');
     }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

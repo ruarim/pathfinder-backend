@@ -127,7 +127,7 @@ class PathController extends Controller
         }
     }
 
-    public function update_participants(int $path_id, Request $request)
+    public function update_participants(int $path_id, Request $request, Authenticatable $auth_user)
     {
         try {
             $email = $request['email'];
@@ -138,8 +138,11 @@ class PathController extends Controller
             if (!$user) throw new Exception('user_id does not exist');
             if (!$path) throw new Exception('path_id does not exisit');
 
-            $path->setParticipant($user->id, $remove);
+            $auth_user_pivot = $path->users()->find($auth_user->id, ['user_id']);
+            if (!$auth_user_pivot) throw new Exception('user not in path');
+            if (!$auth_user_pivot->pivot->is_creator == 1) throw new Exception('authenticated user is not creator');
 
+            $path->setParticipant($user->id, $remove);
             return new PathResource($path);
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
@@ -174,6 +177,7 @@ class PathController extends Controller
         $path = Path::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
             ->where('rateable_id', '=', $path->id)
+            ->where('rateable_type', '=', Path::class)
             ->first();
 
         return new RatingResource($rating);

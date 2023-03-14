@@ -57,6 +57,11 @@ class Venue extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function setAttributes(array $strings): Venue
     {
         $attributes = Attribute::fromStrings($strings);

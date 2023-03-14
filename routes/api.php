@@ -25,8 +25,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::resources([
-    'venues' => VenueController::class,
-    'venues.show' => VenueController::class, //@dev whats this doing?
+    'venues' => VenueController::class, //@dev remove
+    'venues.show' => VenueController::class,
     'attributes' => AttributeController::class,
 ]);
 
@@ -36,12 +36,15 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get("/{id}", [UserController::class, 'show']);
 });
 
+Route::get('venues/{id}/reviews', [VenueController::class, 'get_reviews']);
+
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/{venue}/rating', [VenueController::class, 'get_rating']);
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
     Route::post('/{venue}/favourite', [VenueController::class, 'favourite']);
     Route::get('/{venue}/favourited', [VenueController::class, 'get_favourite']);
     Route::get('/user/favourites', [VenueController::class, 'get_user_favourites']);
+    Route::post('/{venue}/review', [VenueController::class, 'add_review']);
 });
 
 Route::get('paths/{id}', [PathController::class, 'show']);

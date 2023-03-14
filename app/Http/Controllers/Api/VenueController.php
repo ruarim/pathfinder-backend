@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\RatingResource;
+use App\Http\Resources\ReviewResource;
 use App\Http\Resources\VenueResource;
 use App\Models\Favourite;
 use App\Models\Rating;
+use App\Models\Review;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -139,7 +141,7 @@ class VenueController extends Controller
     }
 
     //Validate Request Object
-    public function rate(Request $request, Venue $venue, Authenticatable $user) //@dev how does $venue object get created
+    public function rate(Request $request, Venue $venue, Authenticatable $user)
     {
         //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
         Rating::updateOrCreate(
@@ -166,10 +168,11 @@ class VenueController extends Controller
     {
         $remove = $request['remove'];
         $user_id = $user->id;
+        $venue_id = $venue->id;
 
         //get favourite
-        $favourite = Favourite::where('user_id', '=', $user->id)
-            ->where('favouriteable_id', '=', $venue->id)
+        $favourite = Favourite::where('user_id', '=', $user_id)
+            ->where('favouriteable_id', '=', $venue_id)
             ->first();
 
         if ($remove && $favourite) {
@@ -179,7 +182,7 @@ class VenueController extends Controller
 
         if (!$favourite) {
             Favourite::create([
-                'favouriteable_id' => $venue->id,
+                'favouriteable_id' => $venue_id,
                 'favouriteable_type' => Venue::class,
                 'user_id' => $user_id,
             ]);
@@ -192,6 +195,7 @@ class VenueController extends Controller
         $venue = Venue::findOrFail($id);
         $favourite = Favourite::where('user_id', '=', $user->id)
             ->where('favouriteable_id', '=', $venue->id)
+            ->where('favouriteable_type', '=', Venue::class)
             ->first();
         if ($favourite) {
             return response(['favourited' => true], 200);
@@ -215,8 +219,28 @@ class VenueController extends Controller
         $venue = Venue::findOrFail($id);
         $rating = Rating::where('user_id', '=', $user->id)
             ->where('rateable_id', '=', $venue->id)
+            ->where('rateable_type', '=', Venue::class)
             ->first();
 
         return new RatingResource($rating);
+    }
+
+    public function add_review(Request $request, Venue $venue, Authenticatable $user)
+    {
+        $content = $request['content'];
+
+        Review::create([
+            'user_id' => $user->id,
+            'venue_id' => $venue->id,
+            'content' => $content,
+        ]);
+
+        return response(['message' => 'success - review added'], 200);
+    }
+
+    public function get_reviews(int $id)
+    {
+        $reviews = Review::where('venue_id', '=', $id)->get();
+        return ReviewResource::collection($reviews);
     }
 }
