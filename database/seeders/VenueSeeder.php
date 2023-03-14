@@ -4,11 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Helpers\Calculations;
+use App\Models\Rating;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Venue;
-use Illuminate\Support\Facades\Hash;
 
 class VenueSeeder extends Seeder
 {
@@ -62,6 +63,7 @@ class VenueSeeder extends Seeder
                 ],
                 'images' => ['https://i2-prod.bristolpost.co.uk/incoming/article3761464.ece/ALTERNATES/s615/0_BM_BRI_210120TheGrace_02.jpg'],
                 'review' => "Good varied menu served with great beer/wine by engaging, helpful staff.  Go early in the week or in the day as easier to get table without reservation. We'll be back",
+                'rating' => 4,
             ],
             [
                 'name' => "The Anchor",
@@ -105,7 +107,7 @@ class VenueSeeder extends Seeder
                 ],
                 'images' => ['https://static.designmynight.com/uploads/2020/10/anc14-optimised.png'],
                 'review' => "Lovely food. 3 of us Couldn't eat the platter. Bar staff very friendly. Pop in if you are local. Recommended.",
-
+                'rating' => 3,
             ],
             [
                 'name' => "The Royal Oak",
@@ -150,6 +152,7 @@ class VenueSeeder extends Seeder
                 'images' => ['https://media-cdn.tripadvisor.com/media/photo-s/0f/a2/ef/ea/warm-and-inviting-bar.jpg'],
                 'review' => "Very friendly staff, very helpful. Lovely atmosphere and great very spacious heated and covered gardens.
                 They are happy to welcome dogs, so this is definitely Extra Bonus points",
+                'rating' => 4,
             ],
             [
                 'name' => "The Bristol Flyer",
@@ -193,6 +196,7 @@ class VenueSeeder extends Seeder
                 ],
                 'images' => ['https://www.theflyerbristol.co.uk/content/dam/castle/pub-images/theflyerbristol/theflyerbristol-gallery3.jpg'],
                 'review' => "Great Bristol pub for drinking and eating. Excellent staff, very friendly and helpful!",
+                'rating' => 5,
             ],
             [
                 'name' => "The Prince of Wales",
@@ -236,6 +240,7 @@ class VenueSeeder extends Seeder
                 ],
                 'images' => ['https://i2-prod.bristolpost.co.uk/incoming/article23815.ece/ALTERNATES/s615b/prince-of-wales.jpg'],
                 'review' => "Nice friendly staff, Quick service, decent food and a nice chilled vibe.",
+                'rating' => 4,
             ],
             [
                 "name" => "The Cat and Wheel",
@@ -279,6 +284,7 @@ class VenueSeeder extends Seeder
                 ],
                 'images' => ['https://i2-prod.bristolpost.co.uk/news/bristol-news/article4625885.ece/ALTERNATES/s615/0_Cat-and-Wheel.png'],
                 'review' => "Good prices great bar staff and a great buzz about the place.",
+                'rating' => 5,
             ],
         ])->each(function ($data) {
             $venue = Venue::firstOrCreate([
@@ -316,7 +322,25 @@ class VenueSeeder extends Seeder
                 'password' => 'seeder',
             ]);
 
-            Review::create([
+            //add rating for user
+            Rating::firstOrCreate(
+                [
+                    'rateable_id' => $venue->id,
+                    'rateable_type' => Venue::class,
+                    'user_id' => $user->id,
+                ],
+                [
+                    'rating' => $data['rating']
+                ]
+            );
+
+            $ratings = collect($venue->ratings);
+            $avg_rating = Calculations::calculate_average_rating($ratings);
+            $venue->rating = $avg_rating;
+
+            $venue->save();
+
+            Review::firstOrCreate([
                 'user_id' => $user->id,
                 'venue_id' => $venue->id,
                 'content' => $content,
