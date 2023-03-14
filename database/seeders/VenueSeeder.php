@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Helpers\Calculations;
+use App\Models\Rating;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Venue;
 
@@ -293,6 +298,46 @@ class VenueSeeder extends Seeder
 
             $images_urls = $data['images'];
             $venue->setImages($images_urls);
+
+            $content = $data['review'];
+
+            $email = 'seeder@seeder.com';
+
+            $user = User::firstOrCreate([
+                'first_name' => 'seeder',
+                'last_name' => 'seeder',
+                'username' => 'James',
+                'email' => $email,
+                'password' => 'seeder',
+                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?seed=' . $email,
+            ]);
+
+            //add rating for user
+            Rating::firstOrCreate(
+                [
+                    'rateable_id' => $venue->id,
+                    'rateable_type' => Venue::class,
+                    'user_id' => $user->id,
+                ],
+                [
+                    'rating' => $data['rating']
+                ]
+            );
+
+            $ratings = collect($venue->ratings);
+
+            if ($ratings) {
+                $avg_rating = Calculations::calculate_average_rating($ratings);
+                $venue->rating = $avg_rating;
+            }
+
+            $venue->save();
+
+            Review::firstOrCreate([
+                'user_id' => $user->id,
+                'venue_id' => $venue->id,
+                'content' => $content,
+            ]);
 
             return $venue;
         });

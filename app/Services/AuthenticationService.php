@@ -24,7 +24,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         if (!Auth::attempt($loginRequest->validated())) {
             return response()->json([
                 'message' => 'Unauthorised, please check the details that you have provided.'
-             ], 403);
+            ], 403);
         }
 
         $user = Auth::getUser();
@@ -43,7 +43,8 @@ class AuthenticationService implements AuthenticationServiceInterface
             'last_name' => $registerRequest->last_name,
             'username' => $registerRequest->username,
             'email' => $registerRequest->email,
-            'password' => Hash::make($registerRequest->password)
+            'password' => Hash::make($registerRequest->password),
+            'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?seed=' . $registerRequest->email,
         ]);
 
         $token = $user->createToken('authToken')->plainTextToken;
