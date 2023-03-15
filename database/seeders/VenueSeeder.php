@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Helpers\Calculations;
+use App\Models\Address;
 use App\Models\Rating;
 use App\Models\Review;
 use App\Models\User;
@@ -300,8 +301,12 @@ class VenueSeeder extends Seeder
 
             $venue->save();
 
-            $address_data = $data['address'];
-            $venue->setAddress($address_data);
+            $has_address = Address::where('venue_id', $venue->id,)->first();
+            if ($has_address) $venue->address()->save($has_address);
+            else {
+                $address_data = $data['address'];
+                $venue->setAddress($address_data);
+            }
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
@@ -313,7 +318,7 @@ class VenueSeeder extends Seeder
             $venue->setImages($images_urls);
 
             $content = $data['review'];
-            
+
             $email = 'seeder@seeder.com';
 
             $user = User::firstOrCreate([
