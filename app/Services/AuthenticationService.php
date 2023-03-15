@@ -7,7 +7,6 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,7 +23,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         if (!Auth::attempt($loginRequest->validated())) {
             return response()->json([
                 'message' => 'Unauthorised, please check the details that you have provided.'
-             ], 403);
+            ], 403);
         }
 
         $user = Auth::getUser();
@@ -39,11 +38,10 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function register(RegisterRequest $registerRequest)
     {
         $user = User::create([
-            'first_name' => $registerRequest->first_name,
-            'last_name' => $registerRequest->last_name,
             'username' => $registerRequest->username,
             'email' => $registerRequest->email,
-            'password' => Hash::make($registerRequest->password)
+            'password' => Hash::make($registerRequest->password),
+            'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $registerRequest->email,
         ]);
 
         $token = $user->createToken('authToken')->plainTextToken;

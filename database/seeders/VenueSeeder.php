@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Address;
 use App\helpers\Calculations;
 use App\Models\Rating;
 use App\Models\Review;
@@ -300,8 +301,12 @@ class VenueSeeder extends Seeder
 
             $venue->save();
 
-            $address_data = $data['address'];
-            $venue->setAddress($address_data);
+            $has_address = Address::where('venue_id', $venue->id,)->first();
+            if ($has_address) $venue->address()->save($has_address);
+            else {
+                $address_data = $data['address'];
+                $venue->setAddress($address_data);
+            }
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
@@ -314,12 +319,13 @@ class VenueSeeder extends Seeder
 
             $content = $data['review'];
 
+            $email = 'seeder@seeder.com';
+
             $user = User::firstOrCreate([
-                'first_name' => 'seeder',
-                'last_name' => 'seeder',
                 'username' => 'James',
-                'email' => 'seeder@seeder.com',
+                'email' => $email,
                 'password' => 'seeder',
+                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $email,
             ]);
 
             //add rating for user
