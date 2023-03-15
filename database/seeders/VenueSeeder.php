@@ -313,16 +313,14 @@ class VenueSeeder extends Seeder
             $venue->setImages($images_urls);
 
             $content = $data['review'];
-
+            
             $email = 'seeder@seeder.com';
 
             $user = User::firstOrCreate([
-                'first_name' => 'seeder',
-                'last_name' => 'seeder',
                 'username' => 'James',
                 'email' => $email,
                 'password' => 'seeder',
-                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?seed=' . $email,
+                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $email,
             ]);
 
             //add rating for user
