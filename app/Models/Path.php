@@ -19,6 +19,8 @@ class Path extends Model
         'endpoint_lat',
         'endpoint_long',
         'is_public',
+        'start_date',
+        'start_time',
     ];
 
     public function setVenues(array $ids)

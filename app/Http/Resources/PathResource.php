@@ -29,6 +29,8 @@ class PathResource extends JsonResource
             'is_public' => $this->is_public,
             'venues' => VenueResource::collection($this->venues),
             'users' => UserResource::collection($this->users),
+            'start_date' => $this->start_date,
+            'start_time' => $this->start_time,
         ];
     }
 }
