@@ -23,7 +23,7 @@ class PathController extends Controller
      */
     public function index()
     {
-        //
+        return PathResource::collection(Path::all());
     }
 
     /**
@@ -181,5 +181,15 @@ class PathController extends Controller
             ->first();
 
         return new RatingResource($rating);
+    }
+
+    public function get_users_paths(Authenticatable $user)
+    {
+        $paths = Path::whereHas('users', function ($query) use ($user) {
+            $query
+                ->where('user_id', $user->id)
+                ->where('is_creator', 1);
+        })->get();
+        return PathResource::collection($paths);
     }
 }
