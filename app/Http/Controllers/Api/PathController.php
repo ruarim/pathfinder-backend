@@ -160,7 +160,7 @@ class PathController extends Controller
 
     public function rate(Request $request, Path $path, Authenticatable $user)
     {
-        //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
+        //If rating already exists for the user update the current rating, otherwise create one for that path and attatch the user id to it.
         Rating::updateOrCreate(
             [
                 'rateable_id' => $path->id,
