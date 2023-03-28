@@ -23,7 +23,9 @@ class PathController extends Controller
      */
     public function index()
     {
-        return PathResource::collection(Path::all());
+        //@dev remove for now - will be added back with Explore feature
+        //should only return public paths
+        //return PathResource::collection(Path::all());
     }
 
     /**
