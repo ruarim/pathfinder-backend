@@ -68,12 +68,21 @@ class PathController extends Controller
      * @param  \App\Models\Path  $path
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(int $id, Authenticatable $user)
     {
         try {
-            $venue = Path::find($id);
-            if (!$venue) throw new Exception('we cannot find a record of this path, please check the id');
-            return new PathResource($venue);
+            $path = Path::find($id);
+            if (!$path) throw new Exception('we cannot find a record of this path, please check the id');
+
+            //if public show
+            if ($path->is_public) return new PathResource($path);
+
+            //if private check if user in path
+            $path_user = $path->users()->find($user->id, ['user_id']);
+            if (!$path_user) throw new Exception('user not in path');
+            if ($path_user) {
+                return new PathResource($path);
+            }
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
         }
