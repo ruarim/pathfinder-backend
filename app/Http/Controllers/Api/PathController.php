@@ -23,7 +23,9 @@ class PathController extends Controller
      */
     public function index()
     {
-        //
+        //@dev remove for now - will be added back with Explore feature
+        //should only return public paths
+        //return PathResource::collection(Path::all());
     }
 
     /**
@@ -68,12 +70,21 @@ class PathController extends Controller
      * @param  \App\Models\Path  $path
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id)
+    public function show(int $id, Authenticatable $user)
     {
         try {
-            $venue = Path::find($id);
-            if (!$venue) throw new Exception('we cannot find a record of this path, please check the id');
-            return new PathResource($venue);
+            $path = Path::find($id);
+            if (!$path) throw new Exception('we cannot find a record of this path, please check the id');
+
+            //if public show
+            if ($path->is_public) return new PathResource($path);
+
+            //if private check if user in path
+            $path_user = $path->users()->find($user->id, ['user_id']);
+            if (!$path_user) throw new Exception('user not in path');
+            if ($path_user) {
+                return new PathResource($path);
+            }
         } catch (Exception $e) {
             return response(['message' => $e->getMessage()], 400);
         }
@@ -151,7 +162,7 @@ class PathController extends Controller
 
     public function rate(Request $request, Path $path, Authenticatable $user)
     {
-        //If rating already exists for the user update the current rating, otherwise create one for that venue and attatch the user id to it.
+        //If rating already exists for the user update the current rating, otherwise create one for that path and attatch the user id to it.
         Rating::updateOrCreate(
             [
                 'rateable_id' => $path->id,
@@ -181,5 +192,15 @@ class PathController extends Controller
             ->first();
 
         return new RatingResource($rating);
+    }
+
+    public function get_users_paths(Authenticatable $user)
+    {
+        $paths = Path::whereHas('users', function ($query) use ($user) {
+            $query
+                ->where('user_id', $user->id)
+                ->where('is_creator', 1);
+        })->get();
+        return PathResource::collection($paths);
     }
 }

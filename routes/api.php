@@ -47,14 +47,15 @@ Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/{venue}/review', [VenueController::class, 'add_review']);
 });
 
-Route::get('paths/{id}', [PathController::class, 'show']);
-
 Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [PathController::class, 'store']);
+    Route::get('/{id}', [PathController::class, 'show']);
+    Route::get('', [PathController::class, 'index']);
     Route::post('/{id}/completed', [PathController::class, 'completed']);
     Route::post('/{id}/participants', [PathController::class, 'update_participants']);
     Route::get('/{path}/rating', [PathController::class, 'get_rating']);
     Route::post('/{path}/rate', [PathController::class, 'rate']);
+    Route::get('/user/all', [PathController::class, 'get_users_paths']);
 });
 
 Route::get('venue_attributes_search', [VenueController::class, 'attributes_search']);
