@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Calculations;
+use App\helpers\Calculations;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PathResource;
 use App\Http\Resources\RatingResource;
