@@ -45,10 +45,12 @@ class VenueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(VenueRequest $request)
+    public function store(VenueRequest $request, Authenticatable $user)
     {
+        if (!$user->is_admin) return response(['message' => 'Only admins can create venues'], 400);
         try {
             $data = $request->all();
+            $data['user_id'] = $user->id;
             $venue = new Venue($data);
             $venue->save();
 
@@ -57,7 +59,7 @@ class VenueController extends Controller
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
-
+            
             $beverages_data = $data['beverages'];
             $venue->setBeverages($beverages_data);
 
@@ -242,5 +244,12 @@ class VenueController extends Controller
     {
         $reviews = Review::where('venue_id', '=', $id)->get();
         return ReviewResource::collection($reviews);
+    }
+
+    public function get_admin_venues(Authenticatable $user)
+    {
+        if (!$user->is_admin) return response(['message' => 'Not an admin'], 400);
+        $venues = Venue::where('user_id', '=', $user->id)->get();
+        return VenueResource::collection($venues);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\VenueController;
 use App\Http\Controllers\Api\AttributeController;
 use App\Http\Controllers\Api\PathController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Venue;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,9 +26,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::resources([
-    'venues' => VenueController::class, //@dev remove
-    'venues.show' => VenueController::class,
     'attributes' => AttributeController::class,
+]);
+
+Route::resource('venues', VenueController::class)->only([
+    'index', 'show'
 ]);
 
 
@@ -39,6 +42,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 Route::get('venues/{id}/reviews', [VenueController::class, 'get_reviews']);
 
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
+    Route::post('', [VenueController::class, 'store']);
+    Route::get('/admin/all', [VenueController::class, 'get_admin_venues']);
     Route::get('/{venue}/rating', [VenueController::class, 'get_rating']);
     Route::post('/{venue}/rate', [VenueController::class, 'rate']);
     Route::post('/{venue}/favourite', [VenueController::class, 'favourite']);

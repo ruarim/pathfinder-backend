@@ -24,7 +24,8 @@ class Venue extends Model
         'opening_time',
         'closing_time',
         'venue_type',
-        'description'
+        'description',
+        'user_id',
     ];
 
     public function address()
@@ -60,6 +61,11 @@ class Venue extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function setAttributes(array $strings): Venue
