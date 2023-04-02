@@ -59,10 +59,12 @@ class VenueController extends Controller
 
             $attributes_data = $data['attributes'];
             $venue->setAttributes($attributes_data);
-            
-            $beverages_data = $data['beverages'];
-            $venue->setBeverages($beverages_data);
 
+            if (array_key_exists('beverages', $data)) {
+                $beverages_data = $data['beverages'];
+                $venue->setBeverages($beverages_data);
+            }
+            
             $images_urls = $data['images'];
             $venue->setImages($images_urls);
 
