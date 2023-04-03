@@ -288,7 +288,17 @@ class VenueSeeder extends Seeder
                 'rating' => 5,
             ],
         ])->each(function ($data) {
+            $email = 'seeder@seeder.com';
+
+            $user = User::firstOrCreate([
+                'username' => 'James',
+                'email' => $email,
+                'password' => 'seeder',
+                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $email,
+            ]);
+
             $venue = Venue::firstOrCreate([
+                'user_id' => $user->id,
                 "name" => $data["name"],
                 "capacity" => $data["capacity"],
                 "venue_type" => $data["venue_type"],
@@ -318,15 +328,6 @@ class VenueSeeder extends Seeder
             $venue->setImages($images_urls);
 
             $content = $data['review'];
-
-            $email = 'seeder@seeder.com';
-
-            $user = User::firstOrCreate([
-                'username' => 'James',
-                'email' => $email,
-                'password' => 'seeder',
-                'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $email,
-            ]);
 
             //add rating for user
             Rating::firstOrCreate(
