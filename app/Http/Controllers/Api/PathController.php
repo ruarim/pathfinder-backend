@@ -203,4 +203,19 @@ class PathController extends Controller
         })->get();
         return PathResource::collection($paths);
     }
+
+    public function update_public(Request $request, Path $path, Authenticatable $user)
+    {
+        try {
+            $auth_user_pivot = $path->users()->find($user->id, ['user_id']);
+            if (!$auth_user_pivot) throw new Exception('user not in path');
+            if (!$auth_user_pivot->pivot->is_creator == 1) throw new Exception('authenticated user is not creator');
+
+            $public = $request['public'];
+            $path->setIsPublic($public);
+            return response(['message' => 'path visability updated'], 200);
+        } catch (Exception $e) {
+            return response(['message' => $e->getMessage()], 400);
+        }
+    }
 }

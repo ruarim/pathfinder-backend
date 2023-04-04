@@ -68,6 +68,11 @@ class Path extends Model
         $this->users()->updateExistingPivot($user_id, ["has_completed" => true]);
     }
 
+    public function setIsPublic(int $is_public)
+    {
+        $this->update(['is_public' => $is_public]);
+    }
+
     public function venues()
     {
         return $this->belongsToMany(Venue::class)
