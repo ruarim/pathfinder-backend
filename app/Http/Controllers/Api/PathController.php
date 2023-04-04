@@ -211,7 +211,7 @@ class PathController extends Controller
             if (!$auth_user_pivot) throw new Exception('user not in path');
             if (!$auth_user_pivot->pivot->is_creator == 1) throw new Exception('authenticated user is not creator');
 
-            $public = $request['public'];
+            $public = $request['is_public'];
             $path->setIsPublic($public);
             return response(['message' => 'path visability updated'], 200);
         } catch (Exception $e) {
