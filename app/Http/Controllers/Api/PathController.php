@@ -218,4 +218,18 @@ class PathController extends Controller
             return response(['message' => $e->getMessage()], 400);
         }
     }
+
+    public function get_public_paths()
+    {
+        $paths = Path::where('is_public', '=', 1)->get();
+        return PathResource::collection($paths);
+    }
+
+    public function get_random_plan()
+    {
+        $random_path = Path::where('is_public', '=', 1)->get()->random(1);
+        if (count($random_path) > 0)
+            return response(['path_id' => $random_path[0]->id], 200);
+        else return response(['message' => 'no public paths'], 200);
+    }
 }
