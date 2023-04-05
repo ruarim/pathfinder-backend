@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\VenueController;
 use App\Http\Controllers\Api\AttributeController;
 use App\Http\Controllers\Api\PathController;
 use App\Http\Controllers\Api\UserController;
-use App\Models\Venue;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +52,9 @@ Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/{venue}/review', [VenueController::class, 'add_review']);
 });
 
+Route::get('/paths/public/all', [PathController::class, 'get_public_paths']);
+Route::get('/paths/public/random', [PathController::class, 'get_random_plan']);
+
 Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [PathController::class, 'store']);
     Route::get('/{id}', [PathController::class, 'show']);
@@ -61,6 +64,7 @@ Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () 
     Route::get('/{path}/rating', [PathController::class, 'get_rating']);
     Route::post('/{path}/rate', [PathController::class, 'rate']);
     Route::get('/user/all', [PathController::class, 'get_users_paths']);
+    Route::post('/{path}/set_public', [PathController::class, 'update_public']);
 });
 
 Route::get('venue_attributes_search', [VenueController::class, 'attributes_search']);
