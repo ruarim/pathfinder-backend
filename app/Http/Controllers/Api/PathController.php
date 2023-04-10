@@ -70,7 +70,7 @@ class PathController extends Controller
      * @param  \App\Models\Path  $path
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id, Authenticatable $user)
+    public function show(int $id)
     {
         try {
             $path = Path::find($id);
@@ -78,6 +78,8 @@ class PathController extends Controller
 
             //if public show
             if ($path->is_public) return new PathResource($path);
+
+            $user = Auth::guard('sanctum')->user();
 
             //if private check if user in path
             $path_user = $path->users()->find($user->id, ['user_id']);

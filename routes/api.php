@@ -54,10 +54,10 @@ Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function ()
 
 Route::get('/paths/public/all', [PathController::class, 'get_public_paths']);
 Route::get('/paths/public/random', [PathController::class, 'get_random_plan']);
+Route::get('/paths/{id}', [PathController::class, 'show']);
 
 Route::group(['prefix' => 'paths', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [PathController::class, 'store']);
-    Route::get('/{id}', [PathController::class, 'show']);
     Route::get('', [PathController::class, 'index']);
     Route::post('/{id}/completed', [PathController::class, 'completed']);
     Route::post('/{id}/participants', [PathController::class, 'update_participants']);
