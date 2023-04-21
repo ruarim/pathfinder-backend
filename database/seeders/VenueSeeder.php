@@ -163,9 +163,9 @@ class VenueSeeder extends Seeder
                 "closing_time" => "23:00",
                 'description' => 'Huge pub specialising in local ciders and real ales with cosy booth seating and a patio garden.',
                 'address' => [
-                    'address_1' => "385 Gloucester Road",
+                    'address_1' => "96 Gloucester Road",
                     'town_city' => "Bristol",
-                    'postcode' => "BS7 8TN",
+                    'postcode' => "BS7 8BN",
                     'country' => "England",
                 ],
                 'attributes' => ["Real Ale", "Beer Garden", "DJ"],
