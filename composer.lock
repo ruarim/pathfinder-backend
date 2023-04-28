@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6223cf51a8e0184320e03e8089b4a13",
+    "content-hash": "a45f7c7162f458708bca76f6c2a49561",
     "packages": [
         {
             "name": "brick/math",
@@ -771,6 +771,59 @@
                 }
             ],
             "time": "2022-06-18T20:57:19+00:00"
+        },
+        {
+            "name": "fisharebest/algorithm",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fisharebest/algorithm.git",
+                "reference": "ce8cee9f8b1fe93b998d7c359f6a0e8598d9f1e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fisharebest/algorithm/zipball/ce8cee9f8b1fe93b998d7c359f6a0e8598d9f1e7",
+                "reference": "ce8cee9f8b1fe93b998d7c359f6a0e8598d9f1e7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "*",
+                "phpunit/phpunit": "4 - 9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Fisharebest\\Algorithm\\": "src/",
+                    "Fisharebest\\Tests\\Algorithm\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Roach",
+                    "email": "greg@subaqua.co.uk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Implementation of standard algorithms in PHP.",
+            "homepage": "https://github.com/fisharebest/algorithm",
+            "keywords": [
+                "Algorithm",
+                "diff",
+                "dijkstra",
+                "myers"
+            ],
+            "support": {
+                "issues": "https://github.com/fisharebest/algorithm/issues",
+                "source": "https://github.com/fisharebest/algorithm/tree/1.6.0"
+            },
+            "time": "2021-09-03T12:13:28+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -8247,5 +8300,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

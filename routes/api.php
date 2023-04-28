@@ -33,13 +33,13 @@ Route::resource('venues', VenueController::class)->only([
     'index', 'show'
 ]);
 
-
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
     Route::get("", [UserController::class, 'index']);
     Route::get("/{id}", [UserController::class, 'show']);
 });
 
 Route::get('venues/{id}/reviews', [VenueController::class, 'get_reviews']);
+Route::get('/venues/suggest/route', [VenueController::class, 'suggest']);
 
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [VenueController::class, 'store']);

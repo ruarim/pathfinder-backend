@@ -13,6 +13,7 @@ use App\Http\Resources\VenueResource;
 use App\Models\Favourite;
 use App\Models\Rating;
 use App\Models\Review;
+use App\Services\RouteSuggester;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,7 +65,7 @@ class VenueController extends Controller
                 $beverages_data = $data['beverages'];
                 $venue->setBeverages($beverages_data);
             }
-            
+
             $images_urls = $data['images'];
             $venue->setImages($images_urls);
 
@@ -124,6 +125,7 @@ class VenueController extends Controller
     {
     }
 
+    //REMOVE THIS AND ROUTE !!!!!!
     public function attributes_search(Request $request)
     {
         $attributes = $request->query('attributes');
@@ -253,5 +255,17 @@ class VenueController extends Controller
         if (!$user->is_admin) return response(['message' => 'Not an admin'], 400);
         $venues = Venue::where('user_id', '=', $user->id)->get();
         return VenueResource::collection($venues);
+    }
+
+    public function suggest(Request $request)
+    {
+        $query = $request->query;
+        //should come from query string !
+        $start = $request['start_coords']; //$query['start_coords']
+        $end = $request['end_coords'];
+        $stops = $request['stops'];
+
+        $suggester = new RouteSuggester($stops, $start, $end);
+        $suggester->suggest();
     }
 }
