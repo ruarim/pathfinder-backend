@@ -97,12 +97,6 @@ class RouteSuggester
         return $matches;
     }
 
-    private function removeDuplicates(array $stops)
-    {
-        foreach ($stops as $stop) {
-        }
-    }
-
     private function createVenuesGraph(array $stops)
     {
         $numberOfStops = count($stops);
@@ -114,7 +108,8 @@ class RouteSuggester
                 $this->start,
                 [$venue->latitude, $venue->longitude]
             );
-            $start_vertices[$venue->id] = $distance;
+            $id = $this->getStringId($venue->id);
+            $start_vertices[$id] = $distance;
         }
         $graph['start'] = $start_vertices;
 
@@ -124,7 +119,8 @@ class RouteSuggester
                 array($venue->latitude, $venue->longitude),
                 $this->end
             );
-            $graph[strval($venue->id)] = ['end' => $distance];
+            $id = $this->getStringId($venue->id);
+            $graph[$id] = ['end' => $distance];
         }
 
         //else current stop vertices adj to next stop vertices
@@ -132,7 +128,8 @@ class RouteSuggester
             if ($key == $numberOfStops - 1) break;
 
             foreach ($stopVenues as $venue) {
-                if (array_key_exists($venue->id, $graph)) continue;
+                $id = $this->getStringId($venue->id);
+                if (array_key_exists($id, $graph)) continue;
 
                 $vertices = array();
                 foreach ($stops[$key + 1] as $nextVenue) {
@@ -141,12 +138,15 @@ class RouteSuggester
                         array($nextVenue->latitude, $nextVenue->longitude)
                     );
                     if ($distance == 0) continue;
-                    $vertices[$nextVenue->id] = $distance;
+                    $id = $this->getStringId($nextVenue->id);
+                    $vertices[$id] = $distance;
                 }
                 //if key doesnt exist
-                $graph[strval($venue->id)] = $vertices;
+                $id = $this->getStringId($venue->id);
+                $graph[$id] = $vertices;
             }
         }
+        $graph['end'] = [];
         return $graph;
     }
 
