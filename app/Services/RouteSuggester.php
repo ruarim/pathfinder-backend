@@ -56,7 +56,7 @@ class RouteSuggester
         //CREATE ADJACENCY LIST
         //start adj to first venues
         $venuesGraph = $this->createVenuesGraph($stopsVenues);
-        dd($venuesGraph);
+        //dd($venuesGraph);
 
 
         $dijkstra = new Dijkstra($venuesGraph);
@@ -108,7 +108,7 @@ class RouteSuggester
                 $this->start,
                 [$venue->latitude, $venue->longitude]
             );
-            $id = $this->getStringId($venue->id);
+            $id = $venue->id;
             $start_vertices[$id] = $distance;
         }
         $graph['start'] = $start_vertices;
@@ -119,7 +119,7 @@ class RouteSuggester
                 array($venue->latitude, $venue->longitude),
                 $this->end
             );
-            $id = $this->getStringId($venue->id);
+            $id = $venue->id;
             $graph[$id] = ['end' => $distance];
         }
 
@@ -128,7 +128,7 @@ class RouteSuggester
             if ($key == $numberOfStops - 1) break;
 
             foreach ($stopVenues as $venue) {
-                $id = $this->getStringId($venue->id);
+                $id = $venue->id;
                 if (array_key_exists($id, $graph)) continue;
 
                 $vertices = array();
@@ -138,21 +138,16 @@ class RouteSuggester
                         array($nextVenue->latitude, $nextVenue->longitude)
                     );
                     if ($distance == 0) continue;
-                    $id = $this->getStringId($nextVenue->id);
+                    $id = $nextVenue->id;
                     $vertices[$id] = $distance;
                 }
                 //if key doesnt exist
-                $id = $this->getStringId($venue->id);
+                $id = $venue->id;
                 $graph[$id] = $vertices;
             }
         }
         $graph['end'] = [];
         return $graph;
-    }
-
-    private function getStringId(int $id)
-    {
-        return strval($id) . "\0";
     }
 
     private function sort(float $start, float $end)
