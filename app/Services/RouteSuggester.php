@@ -16,65 +16,69 @@ class RouteSuggester
 
     public function suggest()
     {
-        $stopsVenues = [];
-        //for each stop -> get venue ids where attributes
-        foreach ($this->stopsAttributes as $attributes) {
-            $matches = $this->getLocalVenuesByAttributes($attributes, $this->start, $this->end, $this->searchRange);
-            array_push($stopsVenues, $matches);
-        }
+        $stopsVenues =
+            $this->getLocalVenuesByAttributes(
+                $this->stopsAttributes,
+                $this->start,
+                $this->end,
+                $this->searchRange
+            );
 
         $venuesGraph = $this->createVenuesGraph($stopsVenues);
         $dijkstra = new Dijkstra($venuesGraph);
-
         $path = $dijkstra->shortestPaths('start', 'end');
 
         dd($path);
+
+        return $path;
     }
 
-    private function getLocalVenuesByAttributes(array $attributes, array $start, array $end, int $searchRange)
+    private function getLocalVenuesByAttributes(array $stops, array $start, array $end, int $searchRange)
     {
-        // loop here
-
         $lat = $this->sort($start[0], $end[0]);
         $long = $this->sort($start[1], $end[1]);
 
-        //get local venues with stop attributes
-        $matches =
-            Venue::where(
-                function (Builder $query) use ($lat, $long, $searchRange, $attributes) {
-                    $query
-                        ->whereHas('address', function (Builder $query) use ($lat, $long, $searchRange) {
-                            $query
-                                ->where('latitude', '>', $lat[0] - $searchRange)
-                                ->where('latitude', '<', $lat[1] + $searchRange)
-                                ->where('longitude', '>', $long[0])
-                                ->where('longitude', '<', $long[1]);
-                        })
-                        ->whereHas('attributes', function (Builder $query) use ($attributes) {
-                            $query
-                                ->whereIn('name', $attributes);
-                        }, '>=', count($attributes));
-                }
-            )
-            ->join('addresses', 'venues.id', '=', 'addresses.venue_id')
-            ->get();
+        $venues = [];
+        //for each stop -> get venue ids where attributes
+        foreach ($stops as $attributes) {
+            $matches =
+                Venue::where(
+                    function (Builder $query) use ($lat, $long, $searchRange, $attributes) {
+                        $query
+                            ->whereHas('address', function (Builder $query) use ($lat, $long, $searchRange) {
+                                $query
+                                    ->where('latitude', '>', $lat[0] - $searchRange)
+                                    ->where('latitude', '<', $lat[1] + $searchRange)
+                                    ->where('longitude', '>', $long[0])
+                                    ->where('longitude', '<', $long[1]);
+                            })
+                            ->whereHas('attributes', function (Builder $query) use ($attributes) {
+                                $query
+                                    ->whereIn('name', $attributes);
+                            }, '>=', count($attributes));
+                    }
+                )
+                ->join('addresses', 'venues.id', '=', 'addresses.venue_id')
+                ->get();
 
-        return $matches;
+            array_push($venues, $matches);
+        }
+        return $venues;
     }
 
     private function createVenuesGraph(array $stops)
     {
-        //so longer route have lower total distance
         $distanceOffset = 0.02;
         $numberOfStops = count($stops);
         $graph = array();
 
         $start_vertices = array();
         foreach ($stops[0] as $venue) {
-            $distance = $this->calculateDistance(
-                $this->start,
-                [$venue->latitude, $venue->longitude]
-            );
+            $distance =
+                $this->calculateDistance(
+                    $this->start,
+                    [$venue->latitude, $venue->longitude]
+                );
             $id = $venue->id;
             $start_vertices[$id] = $distance - $distanceOffset;
         }
@@ -82,10 +86,11 @@ class RouteSuggester
 
         //last venues adj to end
         foreach ($stops[$numberOfStops - 1] as $venue) {
-            $distance = $this->calculateDistance(
-                array($venue->latitude, $venue->longitude),
-                $this->end
-            );
+            $distance =
+                $this->calculateDistance(
+                    [$venue->latitude, $venue->longitude],
+                    $this->end
+                );
             $id = $venue->id;
             $graph[$id] = ['end' => $distance - $distanceOffset];
         }
@@ -100,15 +105,15 @@ class RouteSuggester
 
                 $vertices = array();
                 foreach ($stops[$key + 1] as $nextVenue) {
-                    $distance = $this->calculateDistance(
-                        array($venue->latitude, $venue->longitude),
-                        array($nextVenue->latitude, $nextVenue->longitude)
-                    );
+                    $distance =
+                        $this->calculateDistance(
+                            [$venue->latitude, $venue->longitude],
+                            [$nextVenue->latitude, $nextVenue->longitude]
+                        );
                     if ($distance == 0) continue;
                     $id = $nextVenue->id;
                     $vertices[$id] = $distance - $distanceOffset;
                 }
-                //if key doesnt exist
                 $id = $venue->id;
                 $graph[$id] = $vertices;
             }
