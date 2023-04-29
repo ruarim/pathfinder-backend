@@ -16,49 +16,14 @@ class RouteSuggester
 
     public function suggest()
     {
-        //get all venues matching attributes for each stop
-
         $stopsVenues = [];
         //for each stop -> get venue ids where attributes
         foreach ($this->stopsAttributes as $attributes) {
-            $matches = collect($this->getLocalVenuesByAttributes($attributes, $this->start, $this->end, $this->searchRange));
+            $matches = $this->getLocalVenuesByAttributes($attributes, $this->start, $this->end, $this->searchRange);
             array_push($stopsVenues, $matches);
         }
 
-
-
-
-        //ignore zero distance adjencencies
-
-        // $testGraph = [
-        //     'A' => ['B' => 9, 'D' => 14, 'F' => 7],
-        //     'B' => ['A' => 9, 'C' => 11, 'D' => 2, 'F' => 10],
-        //     'C' => ['B' => 11, 'E' => 6, 'F' => 15],
-        //     'D' => ['A' => 14, 'B' => 2, 'E' => 9],
-        //     'E' => ['C' => 6, 'D' => 9],
-        //     'F' => ['A' => 7, 'B' => 10, 'C' => 1],
-        //     'G' => [],
-        // ];
-        // $dijkstra = new Dijkstra($testGraph);
-
-        // $path = $dijkstra->shortestPaths('A', 'E');
-
-        // dd($path);
-
-        //start -> venues in first stop
-        //veneus in first stop -> to venues in second stop
-        //etc..
-        //venues in last stop -> end
-        //weight is the distance between the coords
-
-        //dd($stopsVenues);
-
-        //CREATE ADJACENCY LIST
-        //start adj to first venues
         $venuesGraph = $this->createVenuesGraph($stopsVenues);
-        //dd($venuesGraph);
-
-
         $dijkstra = new Dijkstra($venuesGraph);
 
         $path = $dijkstra->shortestPaths('start', 'end');
@@ -99,6 +64,8 @@ class RouteSuggester
 
     private function createVenuesGraph(array $stops)
     {
+        //so longer route have lower total distance
+        $distanceOffset = 0.02;
         $numberOfStops = count($stops);
         $graph = array();
 
@@ -109,7 +76,7 @@ class RouteSuggester
                 [$venue->latitude, $venue->longitude]
             );
             $id = $venue->id;
-            $start_vertices[$id] = $distance;
+            $start_vertices[$id] = $distance - $distanceOffset;
         }
         $graph['start'] = $start_vertices;
 
@@ -120,7 +87,7 @@ class RouteSuggester
                 $this->end
             );
             $id = $venue->id;
-            $graph[$id] = ['end' => $distance];
+            $graph[$id] = ['end' => $distance - $distanceOffset];
         }
 
         //else current stop vertices adj to next stop vertices
@@ -139,7 +106,7 @@ class RouteSuggester
                     );
                     if ($distance == 0) continue;
                     $id = $nextVenue->id;
-                    $vertices[$id] = $distance;
+                    $vertices[$id] = $distance - $distanceOffset;
                 }
                 //if key doesnt exist
                 $id = $venue->id;
