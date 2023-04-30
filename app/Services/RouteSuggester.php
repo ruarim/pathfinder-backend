@@ -28,9 +28,14 @@ class RouteSuggester
         $dijkstra = new Dijkstra($venuesGraph);
         $path = $dijkstra->shortestPaths('start', 'end');
 
-        dd($path);
+        if (count($path) > 0) {
+            $ids = $path[0];
+            unset($ids[0]);
+            unset($ids[count($ids)]);
 
-        return $path;
+            $venues = Venue::whereIn('id', $ids)->get();
+            return $venues;
+        } else return false;
     }
 
     private function getLocalVenuesByAttributes(array $stops, array $start, array $end, int $searchRange)
@@ -58,7 +63,7 @@ class RouteSuggester
                             }, '>=', count($attributes));
                     }
                 )
-                ->join('addresses', 'venues.id', '=', 'addresses.venue_id')
+                ->join('addresses', 'venues.id', '=', 'venue_id')
                 ->get();
 
             array_push($venues, $matches);
@@ -79,7 +84,7 @@ class RouteSuggester
                     $this->start,
                     [$venue->latitude, $venue->longitude]
                 );
-            $id = $venue->id;
+            $id = $venue->venue_id;
             $start_vertices[$id] = $distance - $distanceOffset;
         }
         $graph['start'] = $start_vertices;
@@ -91,7 +96,7 @@ class RouteSuggester
                     [$venue->latitude, $venue->longitude],
                     $this->end
                 );
-            $id = $venue->id;
+            $id = $venue->venue_id;
             $graph[$id] = ['end' => $distance - $distanceOffset];
         }
 
@@ -100,7 +105,7 @@ class RouteSuggester
             if ($key == $numberOfStops - 1) break;
 
             foreach ($stopVenues as $venue) {
-                $id = $venue->id;
+                $id = $venue->venue_id;
                 if (array_key_exists($id, $graph)) continue;
 
                 $vertices = array();
@@ -111,10 +116,10 @@ class RouteSuggester
                             [$nextVenue->latitude, $nextVenue->longitude]
                         );
                     if ($distance == 0) continue;
-                    $id = $nextVenue->id;
+                    $id = $nextVenue->venue_id;
                     $vertices[$id] = $distance - $distanceOffset;
                 }
-                $id = $venue->id;
+                $id = $venue->venue_id;
                 $graph[$id] = $vertices;
             }
         }

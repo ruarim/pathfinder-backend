@@ -266,6 +266,9 @@ class VenueController extends Controller
         $stops = $request['stops'];
 
         $suggester = new RouteSuggester($stops, $start, $end);
-        $suggester->suggest();
+        $venues = $suggester->suggest();
+
+        if ($venues) return VenueResource::collection($venues);
+        else return response(['message' => 'no venues found'], 200);
     }
 }
