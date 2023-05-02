@@ -259,11 +259,9 @@ class VenueController extends Controller
 
     public function suggest(Request $request)
     {
-        $query = $request->query;
-        //should come from query string !
-        $start = $request['start_coords']; //$query['start_coords']
-        $end = $request['end_coords'];
-        $stops = $request['stops'];
+        $start = $request->query('start_coords');
+        $end = $request->query('end_coords');
+        $stops = $request->query('stops');
 
         $suggester = new RouteSuggester($stops, $start, $end);
         $venues = $suggester->suggest();
