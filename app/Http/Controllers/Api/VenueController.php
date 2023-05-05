@@ -257,7 +257,7 @@ class VenueController extends Controller
         return VenueResource::collection($venues);
     }
 
-    public function suggest(Request $request)
+    public function suggest_shortest_path(Request $request)
     {
         $start = $request->query('start_coords');
         $end = $request->query('end_coords');
@@ -267,6 +267,6 @@ class VenueController extends Controller
         $venues = $suggester->suggest();
 
         if ($venues) return VenueResource::collection($venues);
-        else return response(['message' => 'no venues found'], 200);
+        else return [];
     }
 }

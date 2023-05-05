@@ -39,7 +39,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function () {
 });
 
 Route::get('venues/{id}/reviews', [VenueController::class, 'get_reviews']);
-Route::get('/venues/suggest/route', [VenueController::class, 'suggest']);
+Route::get('/venues/suggest/shortest', [VenueController::class, 'suggest_shortest_path']);
+//Route::get('/venues/suggest/all', [VenueController::class, 'suggest_all']);
 
 Route::group(['prefix' => 'venues', 'middleware' => 'auth:sanctum'], function () {
     Route::post('', [VenueController::class, 'store']);
