@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class RouteSuggester
 {
-    private float $searchRange = 0.2; //needs tweaking
+    private float $searchRange = 0.2; 
 
     public function __construct(
         private array $stopsAttributes,

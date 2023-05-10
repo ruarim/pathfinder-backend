@@ -125,7 +125,6 @@ class VenueController extends Controller
     {
     }
 
-    //REMOVE THIS AND ROUTE !!!!!!
     public function attributes_search(Request $request)
     {
         $attributes = $request->query('attributes');
