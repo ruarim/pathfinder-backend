@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class RouteSuggester
 {
-    private float $searchRange = 0.2; 
+    private float $searchRange = 0.5;
 
     public function __construct(
         private array $stopsAttributes,
@@ -41,7 +41,7 @@ class RouteSuggester
         } else return false;
     }
 
-    private function getLocalVenuesByAttributes(array $stops, array $start, array $end, int $searchRange)
+    private function getLocalVenuesByAttributes(array $stops, array $start, array $end, float $searchRange)
     {
         $lat = $this->sort($start[0], $end[0]);
         $long = $this->sort($start[1], $end[1]);
@@ -57,8 +57,8 @@ class RouteSuggester
                                 $query
                                     ->where('latitude', '>', $lat[0] - $searchRange)
                                     ->where('latitude', '<', $lat[1] + $searchRange)
-                                    ->where('longitude', '>', $long[0])
-                                    ->where('longitude', '<', $long[1]);
+                                    ->where('longitude', '>', $long[0] - $searchRange)
+                                    ->where('longitude', '<', $long[1] + $searchRange);
                             })
                             ->whereHas('attributes', function (Builder $query) use ($attributes) {
                                 $query
