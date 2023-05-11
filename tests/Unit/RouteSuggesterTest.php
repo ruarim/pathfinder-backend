@@ -3,8 +3,7 @@
 namespace Tests\Unit;
 
 use App\Services\RouteSuggester;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
+use Tests\TestCase;
 
 class RouteSuggesterTest extends TestCase
 {
@@ -15,24 +14,26 @@ class RouteSuggesterTest extends TestCase
      */
     public function test_for_shortest_path()
     {
-        $start_vetex = [
-            51.469141,
-            -2.604057
-        ];
+        $expected_venue_id = 35;
 
-        $end_vertex = [
-            51.475200500000000,
-            -2.590841512430562
-        ];
+        $start = array(
+            51.477951,
+            -2.595721,
+        );
 
-        $suggester = new RouteSuggester([''], [], []);
+        $end = array(
+            51.4531549,
+            -2.598458,
+        );
 
-        // $class = new ReflectionClass('RouteSuggester');
-        // $method = $class->getMethod('calculateDistance');
-        // $method->setAccessible(true);
+        $attributes = [['Pool']];
 
-        //$suggester->calculateDistance();
+        $suggester = new RouteSuggester($attributes, $start, $end);
+        $venues = $suggester->suggest();
 
-        $this->assertTrue(true);
+        $this->assertEquals(
+            $expected_venue_id,
+            $venues[0]->id
+        );
     }
 }

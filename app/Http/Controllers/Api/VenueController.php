@@ -260,9 +260,9 @@ class VenueController extends Controller
     {
         $start = $request->query('start_coords');
         $end = $request->query('end_coords');
-        $stops = $request->query('stops');
+        $attributes = $request->query('attributes');
 
-        $suggester = new RouteSuggester($stops, $start, $end);
+        $suggester = new RouteSuggester($attributes, $start, $end);
         $venues = $suggester->suggest();
 
         if ($venues) return VenueResource::collection($venues);
