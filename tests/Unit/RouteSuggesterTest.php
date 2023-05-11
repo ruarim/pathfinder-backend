@@ -16,15 +16,15 @@ class RouteSuggesterTest extends TestCase
     {
         $expected_venue_id = 35;
 
-        $start = array(
+        $start = [
             51.477951,
             -2.595721,
-        );
+        ];
 
-        $end = array(
+        $end = [
             51.4531549,
             -2.598458,
-        );
+        ];
 
         $attributes = [['Pool']];
 
