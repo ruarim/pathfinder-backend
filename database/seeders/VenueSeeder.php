@@ -158,8 +158,12 @@ class VenueSeeder extends Seeder
         $lat = $venue_data['geocodes']['main']['latitude'];
         $long = $venue_data['geocodes']['main']['longitude'];
 
-        $address_exists = Address::where('venue_id', $venue_model->id,)->first();
-        if ($address_exists) $venue_model->address()->save($address_exists);
+        $address_exists = Address::where('venue_id', $venue_model->id,)
+            ->first();
+
+        if ($address_exists) $venue_model
+            ->address()
+            ->save($address_exists);
         else {
             $address_data = [
                 'venue_id' => $venue_model->id,
@@ -170,7 +174,8 @@ class VenueSeeder extends Seeder
                 'latitude' => $lat,
                 'longitude' => $long,
             ];
-            $venue_model->setAddress($address_data);
+            $venue_model
+                ->setAddress($address_data);
         }
     }
 
@@ -207,6 +212,7 @@ class VenueSeeder extends Seeder
         $ratings = collect($venue_model->ratings);
         $avg_rating = Calculations::calculate_average_rating($ratings);
         $venue_model->rating = $avg_rating;
+        $venue_model->save();
     }
 
     private function fakeUser()
