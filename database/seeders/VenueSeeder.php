@@ -110,25 +110,18 @@ class VenueSeeder extends Seeder
         if (!$venueData) return null;
 
         $model = Venue::firstOrCreate($venueData);
-
-        //is this doing anything?
-        if (!$model) return;
-        $model->save();
-
         return $model;
     }
 
     private function seedAddress($venueData, $model)
     {
-        //replace with first or create need to exlude id?
-        $addressExists = Address::where(
+        $existingAddress = Address::where(
             'venue_id',
             $model->id,
         )->first();
 
-        if ($addressExists)
-            $model->address()
-                ->save($addressExists);
+        if ($existingAddress)
+            $model->address()->save($existingAddress);
         else {
             $address = $this->foursquare->buildAddress($venueData);
             if (!$address) return null;
