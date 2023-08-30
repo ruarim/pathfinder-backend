@@ -8,26 +8,26 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 class Foursquare
 {
     private $client;
-    private $auth_token;
+    private $authToken;
 
     public function __construct()
     {
         $this->client = new \GuzzleHttp\Client();
-        $this->auth_token = env('FOURSQUARE_SECRET');
+        $this->authToken = env('FOURSQUARE_SECRET');
     }
 
     public function getVenues(float $lat, float $long, int $radius, int $limit)
     {
         $categories = '13018';
-        $exclude_chains = '07841cd9-3716-4bd6-8ebd-ad13070b3125';
-        $url = "https://api.foursquare.com/v3/places/search?ll={$lat},{$long}&radius={$radius}&categories={$categories}&sort=DISTANCE&limit={$limit}&exclude_chains={$exclude_chains}";
+        $excludeChains = '07841cd9-3716-4bd6-8ebd-ad13070b3125';
+        $url = "https://api.foursquare.com/v3/places/search?ll={$lat},{$long}&radius={$radius}&categories={$categories}&sort=DISTANCE&limit={$limit}&exclude_chains={$excludeChains}";
 
         $response =
             $this
             ->client
             ->request('GET', $url, [
                 'headers' => [
-                    'Authorization' => $this->auth_token,
+                    'Authorization' => $this->authToken,
                     'accept' => 'application/json',
                 ],
             ]);
@@ -46,7 +46,7 @@ class Foursquare
             ->client
             ->request('GET', $url, [
                 'headers' => [
-                    'Authorization' => $this->auth_token,
+                    'Authorization' => $this->authToken,
                     'accept' => 'application/json',
                 ],
             ]);

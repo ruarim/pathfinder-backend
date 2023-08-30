@@ -47,13 +47,12 @@ class VenueSeeder extends Seeder
             $latLong = explode(",", $location);
             echo 'Seeding location: ' . "lat: {$latLong[0]}, long: {$latLong[1]}\n";
 
-            $venues = $this->foursquare
-                ->getVenues(
-                    $latLong[0],
-                    $latLong[1],
-                    $this->seedRadius,
-                    $this->seedLimit
-                )['results'];
+            $venues = $this->foursquare->getVenues(
+                $latLong[0],
+                $latLong[1],
+                $this->seedRadius,
+                $this->seedLimit
+            )['results'];
 
             foreach ($venues as $venue) {
                 echo "Seeding {$venue['name']}...\n";
@@ -65,13 +64,11 @@ class VenueSeeder extends Seeder
                     $user->id
                 );
 
-                //does model need to be passed by ref here?
                 $this->seedAddress(
                     $venue,
                     $model
                 );
 
-                //move build here
                 $this->seedAttributes(
                     $metadata,
                     $model
