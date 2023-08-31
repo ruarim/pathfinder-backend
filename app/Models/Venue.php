@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Address;
 use App\Models\Attribute;
 use App\Models\Image;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
 class Venue extends Model
@@ -82,19 +83,25 @@ class Venue extends Model
         return $this;
     }
 
-    public function setAddress(array $address_data): Venue
+    public function setAddress(array $addressData): Venue
     {
-        //@dev needs error handling
-        $address_1 = $address_data['address_1'];
-        $city = $address_data['town_city'];
-        $country = $address_data['country'];
-        $url = "https://nominatim.openstreetmap.org/search?q={$address_1}, {$city}, {$country}&format=json&polygon=1&addressdetails=1";
-        $response = Http::get($url)->json()[0];
+        $address_1 = $addressData['address_1'];
+        $city = $addressData['town_city'];
+        $country = $addressData['country'];
 
-        $address_data['latitude'] = $response['lat'];
-        $address_data['longitude'] = $response['lon'];
+        if (!Arr::get($addressData, 'latitude') && !Arr::get($addressData, 'longitude')) {
+            try {
+                $url = "https://nominatim.openstreetmap.org/search?q={$address_1}, {$city}, {$country}&format=json&polygon=1&addressdetails=1";
+                $response = Http::get($url)->json()[0];
 
-        $address = new Address($address_data);
+                $addressData['latitude'] = $response['lat'];
+                $addressData['longitude'] = $response['lon'];
+            } catch (\Exception $e) {
+                print_r('Error building venue addrress. Caught exception: ' .  $e->getMessage());
+            }
+        }
+
+        $address = new Address($addressData);
         $this->address()->save($address);
         return $this;
     }
