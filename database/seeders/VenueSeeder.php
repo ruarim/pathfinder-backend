@@ -190,7 +190,10 @@ class VenueSeeder extends Seeder
         $name = $faker->name;
         $password = $faker->password;
 
-        $user = User::firstOrCreate([
+        $user = User::find($email);
+        if ($user) return $user;
+
+        $user = User::Create([
             'username' => $name,
             'email' => $email,
             'password' => $password,
