@@ -18,10 +18,8 @@ class VenueResource extends JsonResource
             'id' => $this->id,
             'admin' => new UserResource($this->user),
             'name' => $this->name,
-            'capacity' => $this->capacity,
             'venue_type' => $this->venue_type,
-            'opening_time' => $this->opening_time,
-            'closing_time' => $this->closing_time,
+            'hours' => $this->hours,
             'description' => $this->description,
             'rating' => $this->rating,
             'address' => [

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\helpers\Calculations;
+use App\Helpers\Calculations;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
