@@ -11,6 +11,7 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Venue;
+use Database\Seeders\Metadata\Foursquare;
 
 class VenueSeeder extends Seeder
 {
