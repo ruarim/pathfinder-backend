@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Metadata;
+namespace Database\Seeders;
 
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Container\BindingResolutionException;

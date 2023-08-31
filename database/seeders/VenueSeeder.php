@@ -32,7 +32,7 @@ class VenueSeeder extends Seeder
         $this->seedLocations = explode(";", $env_string);
         $this->seedRadius = env('SEED_RADIUS');
         $this->seedLimit = env('SEED_LIMIT');
-        $this->foursquare = new \Database\Seeders\Metadata\Foursquare();
+        $this->foursquare = new Foursquare();
     }
 
     public function run()
