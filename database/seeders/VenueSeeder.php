@@ -11,7 +11,6 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Venue;
-use Database\Seeders\Metadata\Foursquare;
 
 class VenueSeeder extends Seeder
 {
@@ -33,7 +32,7 @@ class VenueSeeder extends Seeder
         $this->seedLocations = explode(";", $env_string);
         $this->seedRadius = env('SEED_RADIUS');
         $this->seedLimit = env('SEED_LIMIT');
-        $this->foursquare = new Foursquare();
+        $this->foursquare = new \Database\Seeders\Metadata\Foursquare();
     }
 
     public function run()
