@@ -190,17 +190,20 @@ class VenueSeeder extends Seeder
         $name = $faker->name;
         $password = $faker->password;
 
-        $user = User::find($email);
-        if ($user) return $user;
+        $existingUser = User::where(
+            'email',
+            $email,
+        )->first();
+        if ($existingUser) return $existingUser;
 
-        $user = User::Create([
+        $newUser = User::Create([
             'username' => $name,
             'email' => $email,
             'password' => $password,
             'avatar_url' => 'https://api.dicebear.com/5.x/thumbs/svg?backgroundColor=b6e3f4&seed=' . $email,
         ]);
 
-        return $user;
+        return $newUser;
     }
 
     private function seedUser()
